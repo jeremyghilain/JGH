@@ -9,7 +9,7 @@ public class Testcercle {
         
         System.out.println(c1.getArea());
         
-        System.out.println(Cercle.nbInstances);
+        System.out.println(Cercle.nbInstances); //On utilise la classe plutot que l'objet car c'est Static
         
     }
 }
