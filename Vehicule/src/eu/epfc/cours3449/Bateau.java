@@ -16,6 +16,13 @@ public class Bateau extends Vehicule {
         b.start();
         b.stop();
         b.larguerAmarres();
+        
+        Vehicule v =b;
+        v.age=11;
+        // c'est le même objet que plus haut, il n'y a pas de "new"
+        System.out.println(b.age);
+        v.start();
+        v.stop();
     }
     
 }
