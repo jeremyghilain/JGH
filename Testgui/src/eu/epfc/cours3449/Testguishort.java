@@ -18,13 +18,13 @@ public class Testguishort extends Application {
 
     @Override
     public void start(Stage stage) {
-        for (int i=0;i<3;i++) {
+        for (int i=0;i<5;i++) {
             Stage s = new Stage ();
-            Scene t = new Scene (new Button("Button "+i), 300, 400);
+            Scene t = new Scene (new Button("Button "+i+1), 150, 100);
             s.setScene(t);
-            s.setTitle("Stage "+i);
-            s.setX(i*100+100);
-            s.setY(i*50+100);
+            s.setTitle("Stage "+i+1);
+            s.setX(i*165+100);
+            s.setY(i*125+100);
             s.show();
         }
     }
