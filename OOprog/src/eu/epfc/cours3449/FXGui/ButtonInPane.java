@@ -9,6 +9,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -21,24 +22,33 @@ public class ButtonInPane extends Application {
 
     @Override
     public void start(Stage stage) {
-        Button b1 = new Button("1st child");
-        Button b2 = new Button("2nd child");
-        Button b3 = new Button("3nd child");
-        Button b4 = new Button("4nd child");
-        Button b5 = new Button("5nd child");
-        Button b6 = new Button("6nd child");
         //StackPane p=new StackPane();
-        FlowPane p=new FlowPane();
-        p.getChildren().add(b1);
-        p.getChildren().add(b2);
-        p.getChildren().add(b3);
-        p.getChildren().add(b4);
-        p.getChildren().add(b5);
-        p.getChildren().add(b6);
-        Scene s = new Scene(p,140,200);
-        stage.setScene(s);
-        stage.setTitle("ButtonInPane");
+        Pane p=new Pane();
+        for (int i=0;i<5;i++) {
+            Button b1 = new Button("Button "+(i+1));
+            b1.setLayoutX(60*i);
+            b1.setLayoutY(27*i);
+            p.getChildren().add(b1);
+        }
+        
+        Scene s1 = new Scene(p,350,200);
+        stage.setScene(s1);
+        stage.setTitle("DecreasingButtonInPane");
         stage.show();
+        
+        /*
+        Pane p2=new Pane();
+        for (int i=0;i<5;i++) {
+            Button b2 = new Button("Button "+(i+1));
+            b2.setLayoutX(350-60*i);
+            b2.setLayoutY(200-27*i);
+            p2.getChildren().add(b2);
+        }
+        
+        Scene s2 = new Scene(p2,350,200);
+        stage.setScene(s2);
+        stage.setTitle("IncreasingButtonInPane");
+        stage.show();*/
     }
     
 }
