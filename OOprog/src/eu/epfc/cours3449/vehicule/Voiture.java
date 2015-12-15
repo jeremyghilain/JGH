@@ -1,4 +1,4 @@
-package eu.epfc.cours3449;
+package eu.epfc.cours3449.vehicule;
 
 public class Voiture extends Vehicule {
     
@@ -9,7 +9,7 @@ public class Voiture extends Vehicule {
         Voiture v = new Voiture();
         v.consomation=4.5;
         v.couleur="verte";
-        v.age=15;
+        v.setAge(15);
         v.start();
         v.stop();        
         // par défaut, il va utiliser les méthodes start et stop de Vehicule
@@ -18,7 +18,7 @@ public class Voiture extends Vehicule {
     
     @Override
     public void start() {
-        System.out.println("Voiture "+couleur+" d'age "+age+" an(s) et de consomation "+consomation+" start");
+        System.out.println("Voiture "+couleur+" d'age "+getAge()+" an(s) et de consomation "+consomation+" start");
     }
     
 }

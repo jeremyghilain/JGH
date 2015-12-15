@@ -3,10 +3,24 @@
 Vehicule est une classe mère ou une super classe
 */
 
-package eu.epfc.cours3449;
+package eu.epfc.cours3449.vehicule;
 
 public class Vehicule {
-    int age;
+    private int age;
+    
+    public void Vehicule(int age){
+        this.age=age;
+    }
+    
+    public int getAge(){
+        return age;
+    }
+    
+    public void setAge(int age){
+        if(age>=0 && age<=5000){
+            this.age=age;
+        }
+    }
     
     public void start() {
         System.out.println("Véhicule "+age+" start");
