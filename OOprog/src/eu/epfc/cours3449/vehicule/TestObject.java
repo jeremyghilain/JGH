@@ -11,9 +11,22 @@ public class TestObject {
         System.out.println(o1.toString());
         System.out.println(o1.hashCode());
         System.out.println(Integer.toHexString(o1.hashCode()));
-        o1.equals(o2);
+        System.out.println();
         
-        System.out.println("");
+        System.out.println(o1.equals(o2));
+        o2=o1;
+        System.out.println(o1.equals(o2));
+        String s1=new String("s1");
+        String s2=new String("s2");
+        System.out.println(s1.equals(s2));
+        s2="s1";
+        System.out.println(s1.equals(s2));
+                
+        System.out.println(s1.equals(o2));
+        o2=s1;
+        System.out.println(s1.equals(o2));
+        
+        System.out.println();
         
         Object[] os =new Object[3];
         os[0]=o1;
