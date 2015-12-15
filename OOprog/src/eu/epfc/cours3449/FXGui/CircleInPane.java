@@ -29,7 +29,7 @@ public class CircleInPane extends Application {
         c.setCenterX(150);
         c.setCenterY(150);
         c.setStroke(Color.BLUE);
-        c.setStrokeWidth(7);
+        c.setStrokeWidth(5);
         c.setFill(Color.YELLOW);
         Pane p=new Pane();
         p.getChildren().add(c);
