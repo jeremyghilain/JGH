@@ -7,11 +7,11 @@ public class Cercle extends GeometricObject{
     static int nbInstances=0; // cela permet de faire appel à cette variable partout et en transversal
     private double rayon;
 
-    public Cercle(double rayon) {
+    public Cercle(double rayon, String color) {
+        super(color);
         this.rayon = rayon;
-        nbInstances++;
     }
-
+    
     public static int getNbInstances() {
         return nbInstances;
     }

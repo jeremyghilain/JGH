@@ -4,8 +4,8 @@ import java.util.*;
 
 public class Testcercle {
     public static void main(String[] args) {
-        Cercle c1=new Cercle(5);
-        Cercle c2=new Cercle(3);
+        Cercle c1=new Cercle(5,"blanc");
+        Cercle c2=new Cercle(3,"bleu");
         
         System.out.println(c1.getArea());
         

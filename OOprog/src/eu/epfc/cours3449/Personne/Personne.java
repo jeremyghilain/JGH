@@ -106,8 +106,16 @@ public class Personne {
         return titre;
     }
     
+    public String headToString(){
+        return getTitre()+" "+nom+" "+prenom;
+    }
+    
+    public String tailToString(){
+        return ", de nationalité "+nationalite+", ayant pour adresse "+adresse+", pour adresse mail "+mailadresse+" et comme numero de telephone "+telephone;
+    }
+    
     public String toString() {
-        return getTitre()+" "+nom+" "+prenom+", de nationalité "+nationalite+", ayant pour adresse "+adresse+", pour adresse mail "+mailadresse+" et comme numero de telephone "+telephone;
+        return headToString()+tailToString();
     }
     
     public boolean equals(char genre, String nom, String prenom, double age, String nationalite, String adresse, String mailadresse, String telephone){
