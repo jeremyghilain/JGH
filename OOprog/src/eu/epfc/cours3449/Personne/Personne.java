@@ -1,7 +1,4 @@
 
-
-
-
 package eu.epfc.cours3449.Personne;
 
 public class Personne {
@@ -13,6 +10,12 @@ public class Personne {
     private String adresse; // complète: rue,numero,ville,pays
     private String mailadresse;
     private String telephone;
+    
+    public Personne(){
+        this.genre='M';
+        this.nom="John";
+        this.prenom="Doe";
+    }
     
     public Personne(char genre, String nom, String prenom){
         this.genre=genre;
@@ -99,7 +102,7 @@ public class Personne {
         String titre;
         if(genre=='M') titre="M";
         else if(genre=='F') titre="Mme";
-        else titre="";
+        else titre="La personne";
         return titre;
     }
     

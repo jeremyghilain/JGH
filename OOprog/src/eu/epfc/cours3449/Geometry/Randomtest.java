@@ -1,22 +1,23 @@
-package eu.epfc.cours3449;
+package eu.epfc.cours3449.Geometry;
 
 import java.util.*;
 
-public class project1 {
+public class Randomtest {
 
     public static void main(String[] args) {
         System.out.println("Hello Git, this is a test");
+        int nbrows=2, nblines=10, seed=100;
         
-        generaterandomint(10, 1000);
-        System.out.println("");
-        
-        generaterandomint(10, 1000);
+        for (int i=0;i<nbrows;i++) {
+            generaterandomint(nblines, seed);
+            System.out.println("");
+        }
     }
 
     private static void generaterandomint(int n, int seed) {
         Random r2= new Random();
         for (int j=0;j<n;j++) {
-            System.out.println(r2.nextInt(seed));
+            System.out.print(r2.nextInt(seed)+" ");
         }
     }
     

@@ -1,4 +1,4 @@
-package eu.epfc.cours3449;
+package eu.epfc.cours3449.Geometry;
 
 import java.util.*;
 
