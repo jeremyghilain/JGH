@@ -115,9 +115,20 @@ public class Personne {
     }
     
     public String toString() {
-        return headToString()+tailToString();
+        return headToString()+" "+tailToString();
     }
     
+    public boolean equals(Personne p){
+        boolean isequal=false;
+        if (genre==p.getGenre() && getNom().equals(p.getNom()) && getPrenom().equals(p.getPrenom()) 
+                && age==p.getAge() && getNationalite().equals(p.getNationalite()) 
+                && getAdresse().equals(p.getAdresse()) && getMailadresse().equals(p.getMailadresse()) 
+                && getTelephone().equals(p.getTelephone()))
+            isequal=true;
+        return isequal;
+    }
+    
+    /*
     public boolean equals(char genre, String nom, String prenom, double age, String nationalite, String adresse, String mailadresse, String telephone){
         boolean isequal=false;
         if (this.genre==genre && this.nom.equals(nom) && this.prenom.equals(prenom) 
@@ -128,6 +139,7 @@ public class Personne {
         }
         return isequal;
     }
+    */
     
     
     

@@ -15,9 +15,18 @@ public class Employe extends Personne{
         this.profmail = profmail;
         this.proftel = proftel;
     }
-
-    public Employe(String trigram, String niveau, String departement, String profmail, String proftel, char genre, String nom, String prenom) {
+    
+    public Employe(char genre, String nom, String prenom, String trigram, String niveau, String departement, String profmail, String proftel) {
         super(genre, nom, prenom);
+        this.trigram = trigram;
+        this.niveau = niveau;
+        this.departement = departement;
+        this.profmail = profmail;
+        this.proftel = proftel;
+    }
+
+    public Employe(char genre, String nom, String prenom, String trigram, String niveau, String departement, String profmail, String proftel, double age, String nationalite, String adresse, String mailadresse, String telephone) {
+        super(genre, nom, prenom, age, nationalite, adresse, mailadresse, telephone);
         this.trigram = trigram;
         this.niveau = niveau;
         this.departement = departement;
@@ -66,12 +75,12 @@ public class Employe extends Personne{
     }
     
     public String employeeToString(){
-        return "trigram "+trigram+", "+niveau+", ayant pour departement "+departement+", pour mail professionel "+profmail+" et pour telephone professionel "+proftel;
+        return "trigram "+trigram+", "+niveau+", departement "+departement+", mail professionel "+profmail+", telephone professionel "+proftel;
     }
     
     @Override
     public String toString() {
-        return headToString()+employeeToString()+tailToString();
+        return headToString()+" ("+employeeToString()+") "+tailToString();
     }
 
             
