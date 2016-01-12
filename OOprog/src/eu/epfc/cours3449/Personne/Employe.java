@@ -1,45 +1,34 @@
 
 package eu.epfc.cours3449.Personne;
 
-public class Employe extends Personne{
-    private String trigram;
-    private String niveau;
+public class Employe extends Travailleur {
+    private String employeur;
     private String departement;
-    private String profmail;
-    private String proftel;
+    private String identifiant;
+    private String niveau;
 
-    public Employe(String trigram, String niveau, String departement, String profmail, String proftel) {
-        this.trigram = trigram;
-        this.niveau = niveau;
+    public Employe(char genre, String nom, String prenom, double revenus, String employeur, String departement, String identifiant, String niveau) {
+        super(genre, nom, prenom, revenus);
+        this.employeur = employeur;
         this.departement = departement;
-        this.profmail = profmail;
-        this.proftel = proftel;
+        this.identifiant = identifiant;
+        this.niveau = niveau;
+    }
+
+    public Employe(char genre, String nom, String prenom, double age, String nationalite, String adresse, String mailadresse, String telephone, double revenus, String profmail, String proftel, String employeur, String departement, String identifiant, String niveau) {
+        super(genre, nom, prenom, age, nationalite, adresse, mailadresse, telephone, revenus, profmail, proftel);
+        this.employeur = employeur;
+        this.departement = departement;
+        this.identifiant = identifiant;
+        this.niveau = niveau;
     }
     
-    public Employe(char genre, String nom, String prenom, String trigram, String niveau, String departement, String profmail, String proftel) {
-        super(genre, nom, prenom);
-        this.trigram = trigram;
-        this.niveau = niveau;
-        this.departement = departement;
-        this.profmail = profmail;
-        this.proftel = proftel;
+    public String getIdentifiant() {
+        return identifiant;
     }
 
-    public Employe(char genre, String nom, String prenom, String trigram, String niveau, String departement, String profmail, String proftel, double age, String nationalite, String adresse, String mailadresse, String telephone) {
-        super(genre, nom, prenom, age, nationalite, adresse, mailadresse, telephone);
-        this.trigram = trigram;
-        this.niveau = niveau;
-        this.departement = departement;
-        this.profmail = profmail;
-        this.proftel = proftel;
-    }
-
-    public String getTrigram() {
-        return trigram;
-    }
-
-    public void setTrigram(String trigram) {
-        this.trigram = trigram;
+    public void setIdentifiant(String identifiant) {
+        this.identifiant = identifiant;
     }
 
     public String getNiveau() {
@@ -50,6 +39,14 @@ public class Employe extends Personne{
         this.niveau = niveau;
     }
 
+    public String getEmployeur() {
+        return employeur;
+    }
+
+    public void setEmployeur(String compagnie) {
+        this.employeur = compagnie;
+    }
+
     public String getDepartement() {
         return departement;
     }
@@ -57,31 +54,17 @@ public class Employe extends Personne{
     public void setDepartement(String departement) {
         this.departement = departement;
     }
-
-    public String getProfmail() {
-        return profmail;
-    }
-
-    public void setProfmail(String profmail) {
-        this.profmail = profmail;
-    }
-
-    public String getProftel() {
-        return proftel;
-    }
-
-    public void setProftel(String proftel) {
-        this.proftel = proftel;
-    }
-    
+   
     public String employeeToString(){
-        return "trigram "+trigram+", "+niveau+", departement "+departement+", mail professionel "+profmail+", telephone professionel "+proftel;
+        return "Compagnie " +employeur+", département " +departement+", niveau"+niveau +", identifiant "+identifiant;
     }
     
     @Override
     public String toString() {
-        return headToString()+" ("+employeeToString()+") "+tailToString();
+        return headToString()+" ("+employeeToString()+", "+travailleurToString()+") "+tailToString();
     }
-
+    
+    
+    
             
 }
