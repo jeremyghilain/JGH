@@ -64,7 +64,10 @@ public class Employe extends Travailleur {
         return headToString()+" ("+employeeToString()+", "+travailleurToString()+") "+tailToString();
     }
     
-    
+    @Override
+    public double calculImpots(){
+        return getRevenus()*0.35;
+    }
     
             
 }

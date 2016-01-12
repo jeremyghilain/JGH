@@ -1,7 +1,7 @@
 
 package eu.epfc.cours3449.Personne;
 
-public class Travailleur extends Personne {
+public abstract class Travailleur extends Personne {
     private double revenus; // par ans
     private String profmail;
     private String proftel;
@@ -50,6 +50,7 @@ public class Travailleur extends Personne {
     }
     
     
+    public abstract double calculImpots();
     
     
     public String travailleurToString(){
