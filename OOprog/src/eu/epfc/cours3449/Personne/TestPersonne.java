@@ -1,6 +1,9 @@
 
 package eu.epfc.cours3449.Personne;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class TestPersonne {
     public static void main(String[] args) {
         Personne[] p= new Personne[6]; 
@@ -37,7 +40,11 @@ public class TestPersonne {
         
         
         
-        
+        try {
+            p[0].setAge(-5);
+        } catch (Exception ex) {
+            Logger.getLogger(TestPersonne.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
         
