@@ -15,6 +15,7 @@ public class TestPersonne {
         //p[4]=new Employe('M', "Ghilain", "Jeremy", "JGH", "niveau 2", "B&D", "bye@sopra.com", "973");
         //p[5]=new Employe('M', "Revelaud", "Geoffrey", "GER", "niveau 2", "B&D", "bye@sopra.com", "999");
         
+        /*
         for(int i=0;i<p.length;i++) {
             if(p[i] instanceof Employe) {
                 Employe e=(Employe) p[i];
@@ -37,14 +38,9 @@ public class TestPersonne {
             }
                 
         }
+        */
         
-        
-        
-        try {
-            p[0].setAge(-5);
-        } catch (Exception ex) {
-            Logger.getLogger(TestPersonne.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        p[0].setAge(-5);
         
         
         

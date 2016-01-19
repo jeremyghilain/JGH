@@ -62,9 +62,9 @@ public class Personne {
         return age;
     }
     
-    public void setAge(double age) throws Exception {
-        if (age<=0) {
-            throw new Exception("Impossible to set a negative age");
+    public void setAge(double age) {
+        if (age<0 || age>200) {
+            throw new IllegalArgumentException("Impossible to set a negative age");
         }
         this.age=age;
     }
