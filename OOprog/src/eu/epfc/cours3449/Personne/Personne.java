@@ -7,10 +7,12 @@ public class Personne {
     private String prenom;
     private double age; // en années
     private String nationalite;
-    private String adresse; // complète: rue,numero,ville,pays
+    //private String adresse; // complète: rue,numero,ville,pays
+    private Addresse addresse;
     private String mailadresse;
     private String telephone;
     
+    /*
     public Personne(){
         this.genre='M';
         this.nom="John";
@@ -33,7 +35,7 @@ public class Personne {
         this.mailadresse = mailadresse;
         this.telephone = telephone;
     }
-    
+    */
     public char getGenre(){
         return genre;
     }
@@ -64,7 +66,7 @@ public class Personne {
     
     public void setAge(double age) {
         if (age<0 || age>200) {
-            throw new IllegalArgumentException("Impossible to set a negative age");
+            throw new IllegalArgumentException("Impossible age, please select another");
         }
         this.age=age;
     }
@@ -77,12 +79,12 @@ public class Personne {
         this.nationalite=nationalite;
     }
 
-    public String getAdresse() {
-        return adresse;
+    public Addresse getAddresse() {
+        return addresse;
     }
 
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
+    public void setAddresse(Addresse addresse) {
+        this.addresse = addresse;
     }
 
     public String getMailadresse() {
@@ -114,12 +116,16 @@ public class Personne {
     }
     
     public String tailToString(){
-        return ", de nationalité "+nationalite+", ayant pour adresse "+adresse+", pour adresse mail "+mailadresse+" et comme numero de telephone "+telephone;
+        return ", de nationalité "+nationalite+", ayant pour adresse "+getAddresse()+", pour adresse mail "+mailadresse+" et comme numero de telephone "+telephone;
     }
     
+    
+    
+    /*
     public String toString() {
         return headToString()+" "+tailToString();
     }
+    
     
     public boolean equals(Personne p){
         boolean isequal=false;
@@ -143,6 +149,11 @@ public class Personne {
         return isequal;
     }
     */
+
+    @Override
+    public String toString() {
+        return "Personne{" + "nom=" + nom + ", addresse=" + addresse + '}';
+    }
     
     
     

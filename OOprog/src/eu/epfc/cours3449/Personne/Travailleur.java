@@ -5,7 +5,7 @@ public abstract class Travailleur extends Personne {
     private double revenus; // par ans
     private String profmail;
     private String proftel;
-    
+    /*
     public Travailleur(char genre, String nom, String prenom, double revenus) {
         super(genre, nom, prenom);
         this.revenus = revenus;
@@ -24,7 +24,7 @@ public abstract class Travailleur extends Personne {
         this.profmail = profmail;
         this.proftel = proftel;
     }
-
+*/
     public double getRevenus() {
         return revenus;
     }

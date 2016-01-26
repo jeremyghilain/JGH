@@ -6,7 +6,7 @@ public class Employe extends Travailleur {
     private String departement;
     private String identifiant;
     private String niveau;
-
+/*
     public Employe(char genre, String nom, String prenom, double revenus, String employeur, String departement, String identifiant, String niveau) {
         super(genre, nom, prenom, revenus);
         this.employeur = employeur;
@@ -21,7 +21,7 @@ public class Employe extends Travailleur {
         this.departement = departement;
         this.identifiant = identifiant;
         this.niveau = niveau;
-    }
+    }*/
     
     public String getIdentifiant() {
         return identifiant;
