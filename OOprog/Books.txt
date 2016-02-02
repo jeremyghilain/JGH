@@ -1,0 +1,2 @@
+Book{identifier=123, location=home, buyDate=today, edition=null, isbn=null, format=null, language=null}
+Book{identifier=456, location=here, buyDate=yesterday, edition=null, isbn=null, format=null, language=null}
