@@ -76,9 +76,10 @@ public class Book extends Work {
     }
     
     public String toCsv() {
-        return identifier+";"+location+";"+buyDate+";"+edition+";"+isbn+";"+format+";"+language;
+        return identifier+";"+location+";"+buyDate+";"+edition.getName()+";"+isbn+";"+format+";"+language+";"
+                +this.getAuthor().getName()+";"+this.getAuthor().getFamilyName()+";"+this.getTitle()+";"+this.getFirstPublication()+";"+this.getOrigLanguage();
     }
-    
+
     
             
 }

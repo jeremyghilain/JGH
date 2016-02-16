@@ -1,3 +1,4 @@
-identifier;location;buyDate;edition;isbn;format;language
-123;home;today;null;null;null;null
-456;here;yesterday;null;null;null;null
+Identifier;Location;Buy Date;Edition;Isbn;Format;Language;Author Name;Author Family Name;Title;First Pub;Orig Lang
+456;here;yesterday;cool;null;null;null;null;null;null;null;null
+jer1;livingroom;2015;Galimar;5678;poche;English;Brandon;Sanderson;Steelheart;2014;English
+jer2;livingroom;2015;Galimar;45679;poche;English;Brandon;Sanderson;Firefight;2015;English
