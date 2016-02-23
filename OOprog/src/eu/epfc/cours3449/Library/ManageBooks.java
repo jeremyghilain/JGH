@@ -158,7 +158,6 @@ public class ManageBooks {
             System.out.println("To select books according to the identifier, press 'I'");
             System.out.println("To select books according to the title, press 'T'");
             System.out.println("To select books according to the author, press 'A'");
-            //System.out.println("To get back to the previous menu, press 'R'");
             option = input.nextLine();
             switch (option) {
                 case "I":
@@ -170,10 +169,6 @@ public class ManageBooks {
                 case "A":
                     selection = SelectBooksPerAuthor(input, collection);
                     break;
-                /*case "R":
-                 cont = false;
-                 System.out.println("");
-                 break;*/
                 default:
                     System.out.println("The value enterred in not valid. Try again.");
                     break;
