@@ -1,2 +1,4 @@
 Book{identifier=123, location=home, buyDate=today, edition=null, isbn=null, format=null, language=null}
 Book{identifier=456, location=here, buyDate=yesterday, edition=null, isbn=null, format=null, language=null}
+Book{identifier=Jeremy1, location=Salon, buyDate=2015, edition=eu.epfc.cours3449.Library.Edition@7d4991ad, isbn=12345, format=poche, language=english}
+Book{identifier=jeremy2, location=salon, buyDate=2015, edition=eu.epfc.cours3449.Library.Edition@28d93b30, isbn=123456, format=poche, language=english}

@@ -93,6 +93,53 @@ public class Book extends Work {
                 +this.getAuthor().getName()+";"+this.getAuthor().getFamilyName()+";"+this.getTitle()+";"+this.getFirstPublication()+";"+this.getOrigLanguage();
     }
 
-    
+    public void modBookVar(String option, String newval) {
+        Edition e=new Edition();
+        Author a=new Author();
+        switch (option) {
+                case "identifier":
+                    this.identifier=newval;
+                    break;
+                case "location":
+                    this.location=newval;
+                    break;
+                case "buy date":
+                    this.buyDate=newval;
+                    break;
+                case "edition":
+                    this.edition=e;
+                    e.setName(newval);
+                    break;
+                case "isbn":
+                    this.isbn=newval;
+                    break;
+                case "format":
+                    this.format=newval;
+                    break;
+                case "language":
+                    this.language=newval;
+                    break;
+                case "author name":
+                    this.setAuthor(a);
+                    a.setName(newval);
+                    break;
+                case "author family name":
+                    this.setAuthor(a);
+                    a.setFamilyName(newval);
+                    break;
+                case "title":
+                    this.setTitle(newval);
+                    break;
+                case "first publication":
+                    this.setFirstPublication(newval);
+                    break;
+                case "original language":
+                    this.setOrigLanguage(newval);
+                    break;
+                default:
+                    System.out.println("Error! the variable enterred in not valid! No modification was made!");
+                    break;
+            }
+    }
             
 }

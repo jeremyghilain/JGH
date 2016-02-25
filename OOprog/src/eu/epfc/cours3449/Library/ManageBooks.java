@@ -26,15 +26,11 @@ public class ManageBooks {
         WriteCSV(collection, fileName);
 
         /*
-        
-        The selection is not written (no books added)...
-        
+
         Careful! the techid is modified by the selection array, 
         as there are new books created there as well
         
         Issue when trying to select per Author family name
-        
-        Issue when editing Authors or Editions
         
         
         No management of errors, no try-catch
@@ -96,7 +92,8 @@ public class ManageBooks {
                 ManualyFillBooks(input, collection);
                 break;
             case "S":
-                SummaryOfBooks(input, collection);
+                DisplayBooksComplete(SelectionOfBooks(input, collection));
+                //SummaryOfBooks(input, collection);
                 break;
             case "M":
                 ModifyBook(input, collection);
@@ -150,7 +147,62 @@ public class ManageBooks {
         }
     }
 
-    private static void SelectionOfBooks(Scanner input, ArrayList<Book> collection, ArrayList<Book> selection) {
+    /*
+    private static void SummaryOfBooks(Scanner input, ArrayList<Book> collection) {
+        DisplayBooksComplete(SelectionOfBooks(input, collection));
+    }
+    */
+
+    private static void ModifyBook(Scanner input, ArrayList<Book> collection) {
+        String option = new String();
+        String newval = new String();
+        Boolean cont = true;
+        ArrayList<Book> selection = new ArrayList<>();
+        System.out.println("If there are more than one book selected, you will have to select again");
+        while (selection.size() != 1) {
+            selection=SelectionOfBooks(input, collection);
+        }
+
+        while (cont) {
+            System.out.println("");
+            System.out.println("Enter the name of the variable you want to modify among : ");
+            System.out.println("identifier, location, buy date, edition, isbn, format,");
+            System.out.println("language, author name, author family name, title, ");
+            System.out.println("first publication, original language");
+            System.out.println("");
+            System.out.println("To get back to the previous menu, press 'R'");
+            option = input.nextLine();
+            if (!option.equals("R")){
+                System.out.println("Enter the new value for the variable " + option + " :");
+                newval = input.nextLine();
+            }
+            if (option.equals("R")){
+                cont = false;
+                System.out.println("");
+            } else {
+                selection.get(0).modBookVar(option,newval);
+            }
+        }
+    }
+
+    private static void DeleteBook(Scanner input, ArrayList<Book> collection) {
+        ArrayList<Book> selection = new ArrayList<>();
+        selection=SelectionOfBooks(input, collection);
+        System.out.println("Please confirm the deletion of the following books (Y/N)");
+        DisplayBooksComplete(selection);
+        System.out.println("");
+        String in = input.nextLine();
+        if (in.equals("Y")) {
+            collection.removeAll(selection);
+            System.out.println("The books have been removed");
+        } else {
+            System.out.println("The books were not removed");
+        }
+
+    }
+    
+    private static ArrayList<Book> SelectionOfBooks(Scanner input, ArrayList<Book> collection) {
+        ArrayList<Book> selection = new ArrayList<>();
         String option = new String();
         while (selection.size() == 0) {
             System.out.println("");
@@ -174,6 +226,7 @@ public class ManageBooks {
                     break;
             }
         }
+        return selection;
     }
 
     private static ArrayList<Book> SelectBooksPerIdentifier(Scanner input, ArrayList<Book> collection) {
@@ -184,7 +237,6 @@ public class ManageBooks {
         for (Book b : collection) {
             if (b.getIdentifier().equals(in)) {
                 selection.add(b);
-                b.toDisplay();
             }
         }
         return selection;
@@ -198,7 +250,6 @@ public class ManageBooks {
         for (Book b : collection) {
             if (b.getTitle().equals(in)) {
                 selection.add(b);
-                b.toDisplay();
             }
         }
         return selection;
@@ -219,137 +270,15 @@ public class ManageBooks {
         return selection;
     }
 
-    private static void SummaryOfBooks(Scanner input, ArrayList<Book> collection) {
-        ArrayList<Book> selection = new ArrayList<>();
-        SelectionOfBooks(input, collection, selection);
-        DisplayBooksComplete(selection);
-    }
-
-    private static void ModifyBook(Scanner input, ArrayList<Book> collection) {
-        String option = new String();
-        String newval = new String();
-        Boolean cont = true;
-        ArrayList<Book> selection = new ArrayList<>();
-        System.out.println("If there are more than one book selected, you will have to select again");
-        while (selection.size() != 1) {
-            SelectionOfBooks(input, collection, selection);
-        }
-
-        while (cont) {
-            Edition e = new Edition();
-            Author a = new Author();
-            System.out.println("");
-            System.out.println("Enter the name of the variable you want to modify among : ");
-            System.out.println("identifier, location, buy date, edition, isbn, format,");
-            System.out.println("language, author name, author family name, title, ");
-            System.out.println("first publication, original language");
-            System.out.println("");
-            System.out.println("To get back to the previous menu, press 'R'");
-            option = input.nextLine();
-            switch (option) {
-                case "identifier":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setIdentifier(newval);
-                    break;
-                case "location":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setLocation(newval);
-                    break;
-                case "buy date":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setBuyDate(newval);
-                    break;
-                case "edition":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setEdition(e);
-                    e.setName(newval);
-                    break;
-                case "isbn":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setIsbn(newval);
-                    break;
-                case "format":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setFormat(newval);
-                    break;
-                case "language":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setLanguage(newval);
-                    break;
-                case "author name":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setAuthor(a);
-                    a.setName(newval);
-                    break;
-                case "author family name":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setAuthor(a);
-                    a.setFamilyName(newval);
-                    break;
-                case "title":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setTitle(newval);
-                    break;
-                case "first publication":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setFirstPublication(newval);
-                    break;
-                case "original language":
-                    System.out.println("Enter the new value for the variable " + option + " :");
-                    newval = input.nextLine();
-                    selection.get(0).setOrigLanguage(newval);
-                    break;
-                case "R":
-                    cont = false;
-                    System.out.println("");
-                    break;
-                default:
-                    System.out.println("The variable enterred in not valid. Try again.");
-                    break;
-            }
-        }
-    }
-
-    private static void DeleteBook(Scanner input, ArrayList<Book> collection) {
-        ArrayList<Book> selection = new ArrayList<>();
-        SelectionOfBooks(input, collection, selection);
-        System.out.println("Please confirm the deletion of the following books (Y/N)");
-        System.out.println("");
-        DisplayBooksComplete(selection);
-        String in = input.nextLine();
-        if (in.equals("Y")) {
-            collection.removeAll(selection);
-        } else {
-            System.out.println("The books were not removed");
-        }
-
-    }
-
     private static void WriteCSV(ArrayList<Book> collection, String csvName) throws FileNotFoundException {
         PrintWriter csv = new PrintWriter(csvName);
         csv.println("Tech ID;Identifier;Location;Buy Date;Edition;Isbn;Format;Language;Author Name;Author Family Name;Title;First Pub;Orig Lang");
-        for (int i = 0; i < collection.size(); i++) {
-            csv.println(collection.get(i).toCsv());
+        for (Book b : collection) {
+            csv.println(b.toCsv());
         }
         csv.close();
     }
 
-    /*
-     for (Book b : collection)
-     csv.println(l.toCsv());
-    
-     */
     private static void EnterBookBasics(Book b, Scanner input) {
         System.out.println("Please enter the identifier of the book :");
         b.setIdentifier(input.nextLine());
