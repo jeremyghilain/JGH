@@ -12,18 +12,13 @@ public class ManageBooks {
         String fileName = "Books.csv";
         Boolean cont = true;
         Scanner input = new Scanner(System.in);
-        Scanner filein = new Scanner(new File(fileName));
-        ArrayList<Book> collection = new ArrayList<>();
 
-        FillBooksFromFile(filein, collection, fileName);
-
+        System.out.println("The list of books is based on the source file " + fileName + ".");
+        
         while (cont) {
-            cont = ManageBooksMenu(input, collection, cont, fileName);
+            cont = ManageBooksMenu(input, cont, fileName);
         }
-
-        DisplayBooksBasics(collection);
-
-        WriteCSV(collection, fileName);
+        
 
         /*
 
@@ -46,8 +41,9 @@ public class ManageBooks {
         
     }
 
-    private static void FillBooksFromFile(Scanner filein, ArrayList<Book> collection, String fileName) {
-        System.out.println("The list of books is based on the source file " + fileName + ".");
+    private static ArrayList<Book> FillBooksFromFile(String fileName) throws FileNotFoundException {
+        Scanner filein = new Scanner(new File(fileName));
+        ArrayList<Book> collection = new ArrayList<>();
         String[] infile = new String[13];
         filein.nextLine();
         while (filein.hasNext()) {
@@ -72,9 +68,10 @@ public class ManageBooks {
             b.setFirstPublication(infile[11]);
             b.setOrigLanguage(infile[12]);
         }
+        return collection;
     }
 
-    private static Boolean ManageBooksMenu(Scanner input, ArrayList<Book> collection, Boolean cont, String fileName) {
+    private static Boolean ManageBooksMenu(Scanner input, Boolean cont, String fileName) throws FileNotFoundException {
         String option = new String();
         System.out.println("");
         System.out.println("To get a display of all the book, press 'All'");
@@ -86,24 +83,26 @@ public class ManageBooks {
         option = input.nextLine();
         switch (option) {
             case "All":
-                DisplayBooksComplete(collection);
+                DisplayBooksComplete(FillBooksFromFile(fileName));
                 break;
             case "A":
-                ManualyFillBooks(input, collection);
+                ManualyFillBooks(input, fileName);
                 break;
             case "S":
-                DisplayBooksComplete(SelectionOfBooks(input, collection));
+                DisplayBooksComplete(SelectionOfBooks(input, fileName));
                 //SummaryOfBooks(input, collection);
                 break;
             case "M":
-                ModifyBook(input, collection);
+                ModifyBook(input, fileName);
                 break;
             case "D":
-                DeleteBook(input, collection);
+                DeleteBook(input, fileName);
                 break;
             case "Q":
                 cont = false;
-                System.out.println("The list of books will be saved in the file " + fileName + ".");
+                System.out.println("The final contents of the file "+fileName+" are :");
+                DisplayBooksComplete(FillBooksFromFile(fileName));
+                System.out.println("");
                 System.out.println("Goodbye.");
                 break;
             default:
@@ -113,11 +112,12 @@ public class ManageBooks {
         return cont;
     }
 
-    private static void ManualyFillBooks(Scanner input, ArrayList<Book> collection) {
+    private static void ManualyFillBooks(Scanner input, String fileName) throws FileNotFoundException {
         System.out.println("To enter new books, chose the quantity of information you wish to enter");
         System.out.println("To enter only the basics, enter 'B'.");
         System.out.println("To enter a longer description, enter 'L'.");
         System.out.println("To enter the full description, enter 'F'.");
+        ArrayList<Book> collection=FillBooksFromFile(fileName);
         String option = new String();
         option = input.nextLine();
         while (true) {
@@ -145,22 +145,18 @@ public class ManageBooks {
             }
 
         }
+        WriteCSV(collection, fileName);
     }
 
-    /*
-    private static void SummaryOfBooks(Scanner input, ArrayList<Book> collection) {
-        DisplayBooksComplete(SelectionOfBooks(input, collection));
-    }
-    */
-
-    private static void ModifyBook(Scanner input, ArrayList<Book> collection) {
+    private static void ModifyBook(Scanner input, String fileName) throws FileNotFoundException {
         String option = new String();
         String newval = new String();
         Boolean cont = true;
+        ArrayList<Book> collection=FillBooksFromFile(fileName);
         ArrayList<Book> selection = new ArrayList<>();
         System.out.println("If there are more than one book selected, you will have to select again");
         while (selection.size() != 1) {
-            selection=SelectionOfBooks(input, collection);
+            selection=SelectionOfBooks(input, fileName);
         }
 
         while (cont) {
@@ -172,22 +168,23 @@ public class ManageBooks {
             System.out.println("");
             System.out.println("To get back to the previous menu, press 'R'");
             option = input.nextLine();
-            if (!option.equals("R")){
-                System.out.println("Enter the new value for the variable " + option + " :");
-                newval = input.nextLine();
-            }
             if (option.equals("R")){
                 cont = false;
                 System.out.println("");
             } else {
+                System.out.println("Enter the new value for the variable " + option + " :");
+                newval = input.nextLine();
+                collection.removeAll(selection);
                 selection.get(0).modBookVar(option,newval);
+                collection.add(selection.get(0));
             }
         }
+        WriteCSV(collection, fileName);
     }
 
-    private static void DeleteBook(Scanner input, ArrayList<Book> collection) {
-        ArrayList<Book> selection = new ArrayList<>();
-        selection=SelectionOfBooks(input, collection);
+    private static void DeleteBook(Scanner input, String fileName) throws FileNotFoundException {
+        ArrayList<Book> collection=FillBooksFromFile(fileName);
+        ArrayList<Book> selection =SelectionOfBooks(input, fileName);
         System.out.println("Please confirm the deletion of the following books (Y/N)");
         DisplayBooksComplete(selection);
         System.out.println("");
@@ -198,13 +195,13 @@ public class ManageBooks {
         } else {
             System.out.println("The books were not removed");
         }
-
+        WriteCSV(collection, fileName);
     }
     
-    private static ArrayList<Book> SelectionOfBooks(Scanner input, ArrayList<Book> collection) {
+    private static ArrayList<Book> SelectionOfBooks(Scanner input, String fileName) throws FileNotFoundException {
         ArrayList<Book> selection = new ArrayList<>();
         String option = new String();
-        while (selection.size() == 0) {
+        while (selection.isEmpty()) {
             System.out.println("");
             System.out.println("The selection is empty, please select something");
             System.out.println("To select books according to the identifier, press 'I'");
@@ -213,13 +210,13 @@ public class ManageBooks {
             option = input.nextLine();
             switch (option) {
                 case "I":
-                    selection = SelectBooksPerIdentifier(input, collection);
+                    selection = SelectBooksPerIdentifier(input, FillBooksFromFile(fileName));
                     break;
                 case "T":
-                    selection = SelectBooksPerTitle(input, collection);
+                    selection = SelectBooksPerTitle(input, FillBooksFromFile(fileName));
                     break;
                 case "A":
-                    selection = SelectBooksPerAuthor(input, collection);
+                    selection = SelectBooksPerAuthor(input, FillBooksFromFile(fileName));
                     break;
                 default:
                     System.out.println("The value enterred in not valid. Try again.");
@@ -354,4 +351,10 @@ public class ManageBooks {
         out.close();
     }
 
+    /*
+    private static void SummaryOfBooks(Scanner input, ArrayList<Book> collection) {
+        DisplayBooksComplete(SelectionOfBooks(input, collection));
+    }
+    */
+    
 }
