@@ -152,13 +152,14 @@ public class ManageBooks {
         String option = new String();
         String newval = new String();
         Boolean cont = true;
-        ArrayList<Book> collection=FillBooksFromFile(fileName);
-        ArrayList<Book> selection = new ArrayList<>();
+        ArrayList<Book> collection= FillBooksFromFile(fileName);
+        ArrayList<Book> selection = SelectionOfBooks(input, fileName);
         System.out.println("If there are more than one book selected, you will have to select again");
         while (selection.size() != 1) {
             selection=SelectionOfBooks(input, fileName);
         }
-
+        collection.removeAll(selection);
+        
         while (cont) {
             System.out.println("");
             System.out.println("Enter the name of the variable you want to modify among : ");
@@ -174,11 +175,10 @@ public class ManageBooks {
             } else {
                 System.out.println("Enter the new value for the variable " + option + " :");
                 newval = input.nextLine();
-                collection.removeAll(selection);
                 selection.get(0).modBookVar(option,newval);
-                collection.add(selection.get(0));
             }
         }
+        collection.add(selection.get(0));
         WriteCSV(collection, fileName);
     }
 
