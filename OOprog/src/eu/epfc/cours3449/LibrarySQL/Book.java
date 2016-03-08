@@ -1,29 +1,22 @@
 
 package eu.epfc.cours3449.LibrarySQL;
 
-public class Book extends Work {
-    private static int count=0;
-    public int techid;
-    private String identifier;
+public class Book {
+    private String bookid;
     private String location;
     private String buyDate;
     private Edition edition;
     private String isbn;
     private String format;
     private String language;
+    private Work work;
 
-    public Book(String identifier) {
-        count++;
-        this.techid=count;
-        this.identifier = identifier;
-    }
-    
-    public String getIdentifier() {
-        return identifier;
+    public String getBookid() {
+        return bookid;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setBookid(String bookid) {
+        this.bookid = bookid;
     }
 
     public String getLocation() {
@@ -74,15 +67,23 @@ public class Book extends Work {
         this.language = language;
     }
 
+    public Work getWork() {
+        return work;
+    }
+
+    public void setWork(Work work) {
+        this.work = work;
+    }
+    
     @Override
     public String toString() {
-        return "Book{" + "identifier=" + identifier + ", location=" + location + ", buyDate=" + buyDate + '}';
+        return "Book{" + "identifier=" + bookid + ", location=" + location + ", buyDate=" + buyDate + '}';
     }
     
     public String toStringLong() {
-        return "Book{" + "identifier=" + identifier + ", location=" + location + ", buyDate=" + buyDate + ", edition=" + edition + ", isbn=" + isbn + ", format=" + format + ", language=" + language + '}';
+        return "Book{" + "identifier=" + bookid + ", location=" + location + ", buyDate=" + buyDate + ", edition=" + edition + ", isbn=" + isbn + ", format=" + format + ", language=" + language + '}';
     }
-    
+    /*
     public void toDisplay() {
         System.out.println(techid+" "+identifier+" "+location+" "+buyDate+" "+edition.getName()+" "+isbn+" "+format+" "+language+" "
                 +this.getAuthor().getName()+" "+this.getAuthor().getFamilyName()+" "+this.getTitle()+" "+this.getFirstPublication()+" "+this.getOrigLanguage() );
@@ -93,53 +94,6 @@ public class Book extends Work {
                 +this.getAuthor().getName()+";"+this.getAuthor().getFamilyName()+";"+this.getTitle()+";"+this.getFirstPublication()+";"+this.getOrigLanguage();
     }
 
-    public void modBookVar(String option, String newval) {
-        Edition e=new Edition();
-        Author a=new Author();
-        switch (option) {
-                case "identifier":
-                    this.identifier=newval;
-                    break;
-                case "location":
-                    this.location=newval;
-                    break;
-                case "buy date":
-                    this.buyDate=newval;
-                    break;
-                case "edition":
-                    this.edition=e;
-                    e.setName(newval);
-                    break;
-                case "isbn":
-                    this.isbn=newval;
-                    break;
-                case "format":
-                    this.format=newval;
-                    break;
-                case "language":
-                    this.language=newval;
-                    break;
-                case "author name":
-                    this.setAuthor(a);
-                    a.setName(newval);
-                    break;
-                case "author family name":
-                    this.setAuthor(a);
-                    a.setFamilyName(newval);
-                    break;
-                case "title":
-                    this.setTitle(newval);
-                    break;
-                case "first publication":
-                    this.setFirstPublication(newval);
-                    break;
-                case "original language":
-                    this.setOrigLanguage(newval);
-                    break;
-                default:
-                    System.out.println("Error! the variable enterred in not valid! No modification was made!");
-                    break;
-            }
-    }
+    */
             
 }

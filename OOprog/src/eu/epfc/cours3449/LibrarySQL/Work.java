@@ -2,10 +2,19 @@
 package eu.epfc.cours3449.LibrarySQL;
 
 public class Work {
+    private String workid;
     private Author author;
     private String title;
     private String firstPublication;
     private String origLanguage;
+
+    public String getWorkid() {
+        return workid;
+    }
+
+    public void setWorkid(String workid) {
+        this.workid = workid;
+    }
 
     public String getTitle() {
         return title;
