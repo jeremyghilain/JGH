@@ -101,7 +101,23 @@ public class ManageAuthors {
         val= input.nextLine();
         System.out.println("");
         ResultSet resultSet = statement.executeQuery("SELECT authorid FROM BOOKS WHERE "+var+"='"+val+"'");
+        while (resultSet.next()) {
+            System.out.println(     resultSet.getString(1) 
+                            + "\t" + resultSet.getString(2) 
+                            + "\t" + resultSet.getString(3)
+                            + "\t" + resultSet.getString(4)
+                            + "\t" + resultSet.getString(5)
+                            + "\t" + resultSet.getString(6)
+            );
+        }
         return id;
+    }
+    
+    private static void getAuthorFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "");
+        Statement statement = connx.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT authorid FROM BOOKS WHERE "+var+"='"+val+"'");
     }
     
     private static void DisplayAuthors(){
