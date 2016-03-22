@@ -11,7 +11,7 @@ public class MySQL {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
 
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
 
         Statement statement = connx.createStatement();
 

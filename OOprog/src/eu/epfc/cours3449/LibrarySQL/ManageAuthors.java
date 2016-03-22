@@ -15,7 +15,7 @@ import java.sql.Statement;
 public class ManageAuthors {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
         Statement statement = connx.createStatement();
 
         Boolean cont = true;
@@ -76,7 +76,7 @@ public class ManageAuthors {
     
     private static String SelectAuthors() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
         Statement statement = connx.createStatement();
         Scanner input = new Scanner(System.in);
         String id=new String();
@@ -115,7 +115,7 @@ public class ManageAuthors {
     
     private static void getAuthorFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
         Statement statement = connx.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT authorid FROM BOOKS WHERE "+var+"='"+val+"'");
     }
