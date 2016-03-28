@@ -14,10 +14,6 @@ import java.sql.Statement;
 
 public class ManageAuthors {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-
         Boolean cont = true;
         String option=new String();
         Scanner input = new Scanner(System.in);
@@ -55,29 +51,64 @@ public class ManageAuthors {
         option = input.nextLine();
         System.out.println("");
         switch (option) {
-            case "A": DisplayAuthors(); break;
-            case "S": SelectAuthors(); break;
+            case "A": DisplayAuthors(getAllAuthors()); break;
+            case "S": DisplayAuthors(SelectAuthors()); break;
             case "Q": break;
             default : System.out.println("The value entered is not valid, please enter a correct one");;
         }
     }
      
-    private static void AddAuthors(){
-            
+    private static void AddAuthors() throws ClassNotFoundException, SQLException{
+        Scanner input = new Scanner(System.in);
+        String val=new String();
+        System.out.println("Addition of authors");
+        Author a=new Author();
+        System.out.println("Please enter the ID of the new author");
+        val = input.nextLine();
+        while (!getAuthorFromQuery("authorid", val).isEmpty()) {
+            System.out.println("This ID is already used, please enter a valid ID");
+            val = input.nextLine();
+        }
+        a.setAuthorid(val);        
+        System.out.println("");
+        System.out.println("Please enter the name of the new author");
+        a.setName(input.nextLine());
+        System.out.println("");
+        System.out.println("Please enter the family name of the new author");
+        a.setFamilyName(input.nextLine());
+        System.out.println("");
+        System.out.println("The new author is:");
+        a.toDisplay();
+        setAuthorToQuery(a);
     }
     
-    private static void ModifyAuthors(){
-            
+    private static void ModifyAuthors() throws ClassNotFoundException, SQLException{        
+        Scanner input = new Scanner(System.in);
+        String var=new String();
+        String val=new String();
+        System.out.println("Modification of authors");        
+        System.out.println("What is the author you which to modify");
+        ArrayList<Author> selection = SelectAuthors();
+        System.out.println("");
+        System.out.println("What is the variable you which to modify?");
+        var = input.nextLine();
+        System.out.println("");
+        System.out.println("What is the new value of this variable?");
+        val = input.nextLine();
+        
+        modifyAuthorInQuery(selection, var, val);        
     }
     
-    private static void DeleteAuthors(){
-            
+    private static void DeleteAuthors() throws ClassNotFoundException, SQLException{
+        Scanner input = new Scanner(System.in);
+        String val=new String();
+        System.out.println("Deletion of authors");
+        for (Author a : SelectAuthors() ) {
+            deleteAuthorByQuery(a);
+        }        
     }
     
-    private static String SelectAuthors() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
+    private static ArrayList<Author> SelectAuthors() throws ClassNotFoundException, SQLException {
         Scanner input = new Scanner(System.in);
         String id=new String();
         String var=new String();
@@ -100,27 +131,67 @@ public class ManageAuthors {
         System.out.println("Please enter the value you are look for");
         val= input.nextLine();
         System.out.println("");
-        ResultSet resultSet = statement.executeQuery("SELECT authorid FROM BOOKS WHERE "+var+"='"+val+"'");
-        while (resultSet.next()) {
-            System.out.println(     resultSet.getString(1) 
-                            + "\t" + resultSet.getString(2) 
-                            + "\t" + resultSet.getString(3)
-                            + "\t" + resultSet.getString(4)
-                            + "\t" + resultSet.getString(5)
-                            + "\t" + resultSet.getString(6)
-            );
-        }
-        return id;
+        return getAuthorFromQuery(var, val);
     }
     
-    private static void getAuthorFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
+    private static ArrayList<Author> getAuthorFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
+        ArrayList<Author> selection = new ArrayList<>();
         Class.forName("com.mysql.jdbc.Driver");
         Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
         Statement statement = connx.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT authorid FROM BOOKS WHERE "+var+"='"+val+"'");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM AUTHORS WHERE "+var+"='"+val+"'");
+        while (resultSet.next()) {
+            Author a = new Author();
+            selection.add(a);
+            a.setAuthorid(resultSet.getString(1));
+            a.setName(resultSet.getString(2));
+            a.setFamilyName(resultSet.getString(3));
+        }
+        return selection;
     }
     
-    private static void DisplayAuthors(){
-        
+    private static void modifyAuthorInQuery(ArrayList<Author> selection, String var, String val) throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
+        Statement statement = connx.createStatement();
+        for (Author a : selection) {
+            statement.executeQuery("UPDATE AUTHORS SET "+var+"='"+val+"' WHERE AUTHORID='"+a.getAuthorid()+"'");
+        }
+    }
+    
+    private static void setAuthorToQuery(Author a) throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
+        Statement statement = connx.createStatement();
+        statement.execute("insert into AUTHORS (authorid,name,family_name) values ('"+a.getAuthorid()+"','"+a.getName()+"','"+a.getFamilyName()+"') ;");
+    }
+    
+    private static ArrayList<Author> getAllAuthors() throws ClassNotFoundException, SQLException {
+        ArrayList<Author> selection = new ArrayList<>();
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
+        Statement statement = connx.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM AUTHORS");
+        while (resultSet.next()) {
+            Author a = new Author();
+            selection.add(a);
+            a.setAuthorid(resultSet.getString(1));
+            a.setName(resultSet.getString(2));
+            a.setFamilyName(resultSet.getString(3));
+        }
+        return selection;
+    }
+    
+    private static void deleteAuthorByQuery(Author a) throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
+        Statement statement = connx.createStatement();
+        statement.executeQuery("DELETE * FROM AUTHORS WHERE authorid='"+a.getAuthorid()+"'");
+    }
+    
+    private static void DisplayAuthors(ArrayList<Author> selection) {
+        for (Author a : selection) {
+            a.toDisplay();
+        }
     }
 }

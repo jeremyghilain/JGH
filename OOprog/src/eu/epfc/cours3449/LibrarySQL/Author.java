@@ -1,6 +1,13 @@
 
 package eu.epfc.cours3449.LibrarySQL;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 public class Author {
     private String authorid;
     private String name;
@@ -30,5 +37,8 @@ public class Author {
         this.familyName = familyName;
     }
     
+    public void toDisplay() {
+        System.out.println(authorid+" "+name+" "+familyName);
+    }
     
 }
