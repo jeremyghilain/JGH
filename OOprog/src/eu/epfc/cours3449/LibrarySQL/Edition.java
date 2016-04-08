@@ -21,5 +21,9 @@ public class Edition {
         this.name = name;
     }
     
+    public void toDisplay() {
+        System.out.println(editionid+" "+name);
+    }
+    
      
 }
