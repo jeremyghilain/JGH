@@ -29,9 +29,9 @@ public class ManageLibrary {
             option = input.nextLine();
             System.out.println("");
             switch (option) {
-                case "A": ManageAuthors.main();break;
-                case "E": ManageEditions.main(); break;
-                case "W": ManageWorks.main(); break;
+                case "A": ManageAuthors.main(null);break;
+                case "E": ManageEditions.main(null); break;
+                case "W": ManageWorks.main(null); break;
                 //case "B": ManageBooks(); break;
                 case "Q": cont=false; break;
                 default : System.out.println("The value entered is not valid, please enter a correct one");

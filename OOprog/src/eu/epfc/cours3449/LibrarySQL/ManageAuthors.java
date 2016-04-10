@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ManageAuthors {
-    public static void main() throws ClassNotFoundException, SQLException {
+    public static void main(String args[ ]) throws ClassNotFoundException, SQLException {
         Boolean cont = true;
         String option=new String();
         Scanner input = new Scanner(System.in);
