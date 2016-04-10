@@ -3,10 +3,18 @@ package eu.epfc.cours3449.LibrarySQL;
 
 public class Work {
     private String workid;
-    private Author author;
+    private String authorid;
     private String title;
     private String firstPublication;
     private String origLanguage;
+
+    public String getAuthorid() {
+        return authorid;
+    }
+
+    public void setAuthorid(String authorid) {
+        this.authorid = authorid;
+    }
 
     public String getWorkid() {
         return workid;
@@ -32,14 +40,6 @@ public class Work {
         this.firstPublication = firstPublication;
     }
 
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
     public String getOrigLanguage() {
         return origLanguage;
     }
@@ -48,5 +48,8 @@ public class Work {
         this.origLanguage = origLanguage;
     }
     
+    public void toDisplay() {
+        System.out.println(workid+" "+authorid+" "+title+" "+firstPublication+" "+origLanguage);
+    }
     
 }

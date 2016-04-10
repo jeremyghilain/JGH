@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ManageAuthors {
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+    public static void main() throws ClassNotFoundException, SQLException {
         Boolean cont = true;
         String option=new String();
         Scanner input = new Scanner(System.in);
@@ -150,7 +150,7 @@ public class ManageAuthors {
         return getAuthorFromQuery(var, val);
     }
     
-    private static ArrayList<Author> getAuthorFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
+    public static ArrayList<Author> getAuthorFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
         ArrayList<Author> selection = new ArrayList<>();
         Class.forName("com.mysql.jdbc.Driver");
         Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");

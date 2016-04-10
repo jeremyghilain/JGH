@@ -3,14 +3,30 @@ package eu.epfc.cours3449.LibrarySQL;
 
 public class Book {
     private String bookid;
+    private String workid;
+    private String editionif;
     private String location;
     private String buyDate;
-    private Edition edition;
     private String isbn;
     private String format;
     private String language;
-    private Work work;
 
+    public String getWorkid() {
+        return workid;
+    }
+
+    public void setWorkid(String workid) {
+        this.workid = workid;
+    }
+
+    public String getEditionif() {
+        return editionif;
+    }
+
+    public void setEditionif(String editionif) {
+        this.editionif = editionif;
+    }
+    
     public String getBookid() {
         return bookid;
     }
@@ -51,13 +67,6 @@ public class Book {
         this.buyDate = buyDate;
     }
 
-    public Edition getEdition() {
-        return edition;
-    }
-
-    public void setEdition(Edition edition) {
-        this.edition = edition;
-    }
 
     public String getLanguage() {
         return language;
@@ -66,24 +75,17 @@ public class Book {
     public void setLanguage(String language) {
         this.language = language;
     }
-
-    public Work getWork() {
-        return work;
-    }
-
-    public void setWork(Work work) {
-        this.work = work;
-    }
     
     @Override
     public String toString() {
         return "Book{" + "identifier=" + bookid + ", location=" + location + ", buyDate=" + buyDate + '}';
     }
     
+    /*
     public String toStringLong() {
         return "Book{" + "identifier=" + bookid + ", location=" + location + ", buyDate=" + buyDate + ", edition=" + edition + ", isbn=" + isbn + ", format=" + format + ", language=" + language + '}';
     }
-    /*
+    
     public void toDisplay() {
         System.out.println(techid+" "+identifier+" "+location+" "+buyDate+" "+edition.getName()+" "+isbn+" "+format+" "+language+" "
                 +this.getAuthor().getName()+" "+this.getAuthor().getFamilyName()+" "+this.getTitle()+" "+this.getFirstPublication()+" "+this.getOrigLanguage() );
