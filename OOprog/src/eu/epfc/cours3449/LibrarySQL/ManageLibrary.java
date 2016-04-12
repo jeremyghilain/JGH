@@ -32,7 +32,7 @@ public class ManageLibrary {
                 case "A": ManageAuthors.main(null);break;
                 case "E": ManageEditions.main(null); break;
                 case "W": ManageWorks.main(null); break;
-                //case "B": ManageBooks(); break;
+                case "B": ManageBooks.main(null); break;
                 case "Q": cont=false; break;
                 default : System.out.println("The value entered is not valid, please enter a correct one");
             }
