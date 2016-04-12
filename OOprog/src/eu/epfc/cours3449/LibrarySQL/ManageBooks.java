@@ -46,7 +46,7 @@ public class ManageBooks {
         String option=new String();
         System.out.println("Summary of Books");
         System.out.println("To display all books, enter 'A'");
-        System.out.println("To select an specific book, enter 'S'");
+        System.out.println("To select a specific book, enter 'S'");
         System.out.println("To quit this menu, enter 'Q'");
         option = input.nextLine();
         System.out.println("");
@@ -135,14 +135,17 @@ public class ManageBooks {
         ArrayList<Book> selection = SelectBooks();
         System.out.println("What is the variable you which to modify?");
         System.out.println("For the book ID, enter 'B'. For the work ID, enter 'W'. For the edition ID, enter 'E'. For the location, enter 'L'. "
-                + "For the buy date, enter 'D'. For the isbn, enter 'I'. For the format, enter 'F'. For the language, enter 'L'.");
+                + "For the buy date, enter 'D'. For the isbn, enter 'I'. For the format, enter 'F'. For the language, enter 'G'.");
         option = input.nextLine();
         switch (option) {
-            case "I": var="bookid";break;
-            case "A": var="editionid";break;
-            case "T": var="title";break;
-            case "P": var="first_publication";break;
-            case "L": var="original_language";break;
+            case "B": var="bookid";break;
+            case "W": var="workid";break;
+            case "E": var="editionid";break;
+            case "L": var="location";break;
+            case "D": var="buy_date";break;
+            case "I": var="isbn";break;
+            case "F": var="format";break;
+            case "G": var="language";break;
             default : System.out.println("The value entered is not valid, please enter a correct one");
         }
         System.out.println("");
@@ -183,20 +186,26 @@ public class ManageBooks {
         String val=new String();
         String option=new String();
         System.out.println("Selection of books");
-        System.out.println("To search based on the ID, enter 'I'");
-        System.out.println("To search based on the edition ID, enter 'A'");
-        System.out.println("To search based on the title, enter 'T'");
-        System.out.println("To search based on the date of first publication, enter 'P'");
-        System.out.println("To search based on the original language, enter 'L'");
+        System.out.println("To search based on the book ID, enter 'B'");
+        System.out.println("To search based on the work ID, enter 'W'");
+        System.out.println("To search based on the edition ID, enter 'E'");
+        System.out.println("To search based on the location, enter 'L'");
+        System.out.println("To search based on the buy date, enter 'D'");
+        System.out.println("To search based on the isbn, enter 'I'");
+        System.out.println("To search based on the format, enter 'F'");
+        System.out.println("To search based on the language, enter 'G'");
         System.out.println("To quit this menu, enter 'Q'");
         option = input.nextLine();
         System.out.println("");
         switch (option) {
-            case "I": var="bookid";break;
-            case "A": var="editionid";break;
-            case "T": var="title";break;
-            case "P": var="first_publication";break;
-            case "L": var="original_language";break;
+            case "B": var="bookid";break;
+            case "W": var="workid";break;
+            case "E": var="editionid";break;
+            case "L": var="location";break;
+            case "D": var="buy_date";break;
+            case "I": var="isbn";break;
+            case "F": var="format";break;
+            case "G": var="language";break;
             case "Q": break;
             default : System.out.println("The value entered is not valid, please enter a correct one");;
         }
