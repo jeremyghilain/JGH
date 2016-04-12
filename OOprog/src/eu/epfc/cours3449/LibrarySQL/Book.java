@@ -4,7 +4,7 @@ package eu.epfc.cours3449.LibrarySQL;
 public class Book {
     private String bookid;
     private String workid;
-    private String editionif;
+    private String editionid;
     private String location;
     private String buyDate;
     private String isbn;
@@ -19,12 +19,12 @@ public class Book {
         this.workid = workid;
     }
 
-    public String getEditionif() {
-        return editionif;
+    public String getEditionid() {
+        return editionid;
     }
 
-    public void setEditionif(String editionif) {
-        this.editionif = editionif;
+    public void setEditionid(String editionid) {
+        this.editionid = editionid;
     }
     
     public String getBookid() {
@@ -81,21 +81,8 @@ public class Book {
         return "Book{" + "identifier=" + bookid + ", location=" + location + ", buyDate=" + buyDate + '}';
     }
     
-    /*
-    public String toStringLong() {
-        return "Book{" + "identifier=" + bookid + ", location=" + location + ", buyDate=" + buyDate + ", edition=" + edition + ", isbn=" + isbn + ", format=" + format + ", language=" + language + '}';
-    }
-    
     public void toDisplay() {
-        System.out.println(techid+" "+identifier+" "+location+" "+buyDate+" "+edition.getName()+" "+isbn+" "+format+" "+language+" "
-                +this.getAuthor().getName()+" "+this.getAuthor().getFamilyName()+" "+this.getTitle()+" "+this.getFirstPublication()+" "+this.getOrigLanguage() );
-    }
+        System.out.println(bookid+" "+workid+" "+editionid+" "+location+" "+buyDate+" "+isbn+" "+format+" "+language);
+    }    
     
-    public String toCsv() {
-        return techid+";"+identifier+";"+location+";"+buyDate+";"+edition.getName()+";"+isbn+";"+format+";"+language+";"
-                +this.getAuthor().getName()+";"+this.getAuthor().getFamilyName()+";"+this.getTitle()+";"+this.getFirstPublication()+";"+this.getOrigLanguage();
-    }
-
-    */
-            
 }

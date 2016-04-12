@@ -58,7 +58,7 @@ public class ManageEditions {
         }
     }
      
-    private static void AddEditions() throws ClassNotFoundException, SQLException{
+    public static void AddEditions() throws ClassNotFoundException, SQLException{
         Scanner input = new Scanner(System.in);
         String val=new String();
         System.out.println("Addition of editions");
@@ -144,7 +144,7 @@ public class ManageEditions {
         return getEditionFromQuery(var, val);
     }
     
-    private static ArrayList<Edition> getEditionFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
+    public static ArrayList<Edition> getEditionFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
         ArrayList<Edition> selection = new ArrayList<>();
         Class.forName("com.mysql.jdbc.Driver");
         Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");

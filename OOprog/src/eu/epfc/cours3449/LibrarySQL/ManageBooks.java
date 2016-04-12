@@ -1,3 +1,4 @@
+
 package eu.epfc.cours3449.LibrarySQL;
 
 import java.io.File;
@@ -5,356 +6,275 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ManageBooks {
-
-    public static void main(String[] args) throws FileNotFoundException {
-        String fileName = "Books.csv";
+    public static void main(String args[ ]) throws ClassNotFoundException, SQLException {
         Boolean cont = true;
+        String option=new String();
         Scanner input = new Scanner(System.in);
-
-        System.out.println("The list of books is based on the source file " + fileName + ".");
         
         while (cont) {
-            cont = ManageBooksMenu(input, cont, fileName);
-        }
-        
-
-        /*
-
-        Careful! the techid is modified by the selection array, 
-        as there are new books created there as well
-        
-        Issue when trying to select per Author family name
-        
-        
-        No management of errors, no try-catch
-        
-        no "deep clone" of books (security issue)
-        
-        
-        
-        */
-        
-        
-        
-        
-    }
-
-    private static ArrayList<Book> FillBooksFromFile(String fileName) throws FileNotFoundException {
-        Scanner filein = new Scanner(new File(fileName));
-        ArrayList<Book> collection = new ArrayList<>();
-        String[] infile = new String[13];
-        filein.nextLine();
-        while (filein.hasNext()) {
-            infile = filein.nextLine().split(";");
-            Book b = new Book("null");
-            Edition e = new Edition();
-            Author a = new Author();
-            collection.add(b);
-            b.setAuthor(a);
-            b.setEdition(e);
-            // read the file's columns
-            b.setIdentifier(infile[1]);
-            b.setLocation(infile[2]);
-            b.setBuyDate(infile[3]);
-            e.setName(infile[4]);
-            b.setIsbn(infile[5]);
-            b.setFormat(infile[6]);
-            b.setLanguage(infile[7]);
-            a.setName(infile[8]);
-            a.setFamilyName(infile[9]);
-            b.setTitle(infile[10]);
-            b.setFirstPublication(infile[11]);
-            b.setOrigLanguage(infile[12]);
-        }
-        return collection;
-    }
-
-    private static Boolean ManageBooksMenu(Scanner input, Boolean cont, String fileName) throws FileNotFoundException {
-        String option = new String();
-        System.out.println("");
-        System.out.println("To get a display of all the book, press 'All'");
-        System.out.println("If you want to enter more books manualy, type A");
-        System.out.println("If you want to view a book, type S");
-        System.out.println("If you want to modify a book, type M");
-        System.out.println("If you want to delete books from the list, type D");
-        System.out.println("If you want to quit, type Q");
-        option = input.nextLine();
-        switch (option) {
-            case "All":
-                DisplayBooksComplete(FillBooksFromFile(fileName));
-                break;
-            case "A":
-                ManualyFillBooks(input, fileName);
-                break;
-            case "S":
-                DisplayBooksComplete(SelectionOfBooks(input, fileName));
-                //SummaryOfBooks(input, collection);
-                break;
-            case "M":
-                ModifyBook(input, fileName);
-                break;
-            case "D":
-                DeleteBook(input, fileName);
-                break;
-            case "Q":
-                cont = false;
-                System.out.println("The final contents of the file "+fileName+" are :");
-                DisplayBooksComplete(FillBooksFromFile(fileName));
-                System.out.println("");
-                System.out.println("Goodbye.");
-                break;
-            default:
-                System.out.println("The value enterred in not valid. Try again.");
-                break;
-        }
-        return cont;
-    }
-
-    private static void ManualyFillBooks(Scanner input, String fileName) throws FileNotFoundException {
-        System.out.println("To enter new books, chose the quantity of information you wish to enter");
-        System.out.println("To enter only the basics, enter 'B'.");
-        System.out.println("To enter a longer description, enter 'L'.");
-        System.out.println("To enter the full description, enter 'F'.");
-        ArrayList<Book> collection=FillBooksFromFile(fileName);
-        String option = new String();
-        option = input.nextLine();
-        while (true) {
-            Book b = new Book("null");
-            collection.add(b);
-
-            switch (option) {
-                case "B":
-                    EnterBookBasics(b, input);
-                    break;
-                case "L":
-                    EnterBookBasics(b, input);
-                    EnterBookLong(b, input);
-                    break;
-                case "F":
-                    EnterBookBasics(b, input);
-                    EnterBookLong(b, input);
-                    EnterWork(b, input);
-                    break;
-            }
-
-            System.out.println("Do you want to enter a new book? (N to quit)");
-            if (input.nextLine().equals("N")) {
-                break;
-            }
-
-        }
-        WriteCSV(collection, fileName);
-    }
-
-    private static void ModifyBook(Scanner input, String fileName) throws FileNotFoundException {
-        String option = new String();
-        String newval = new String();
-        Boolean cont = true;
-        ArrayList<Book> collection=FillBooksFromFile(fileName);
-        ArrayList<Book> selection = new ArrayList<>();
-        System.out.println("If there are more than one book selected, you will have to select again");
-        while (selection.size() != 1) {
-            selection=SelectionOfBooks(input, fileName);
-        }
-
-        while (cont) {
-            System.out.println("");
-            System.out.println("Enter the name of the variable you want to modify among : ");
-            System.out.println("identifier, location, buy date, edition, isbn, format,");
-            System.out.println("language, author name, author family name, title, ");
-            System.out.println("first publication, original language");
-            System.out.println("");
-            System.out.println("To get back to the previous menu, press 'R'");
+            System.out.println("Management of books");
+            System.out.println("To display books, enter 'S'");
+            System.out.println("To add books, enter 'A'");
+            System.out.println("To modify books, enter 'M'");
+            System.out.println("To delete books, enter 'D'");
+            System.out.println("To quit this menu, enter 'Q'");
             option = input.nextLine();
-            if (option.equals("R")){
-                cont = false;
-                System.out.println("");
-            } else {
-                System.out.println("Enter the new value for the variable " + option + " :");
-                newval = input.nextLine();
-                collection.removeAll(selection);
-                selection.get(0).modBookVar(option,newval);
-                collection.add(selection.get(0));
+            System.out.println("");
+            switch (option) {
+                case "S": SummaryBooks(); break;
+                case "A": AddBooks(); break;
+                case "M": ModifyBooks(); break;
+                case "D": DeleteBooks(); break;
+                case "Q": cont=false; break;
+                default : System.out.println("The value entered is not valid, please enter a correct one");
             }
         }
-        WriteCSV(collection, fileName);
-    }
-
-    private static void DeleteBook(Scanner input, String fileName) throws FileNotFoundException {
-        ArrayList<Book> collection=FillBooksFromFile(fileName);
-        ArrayList<Book> selection =SelectionOfBooks(input, fileName);
-        System.out.println("Please confirm the deletion of the following books (Y/N)");
-        DisplayBooksComplete(selection);
-        System.out.println("");
-        String in = input.nextLine();
-        if (in.equals("Y")) {
-            collection.removeAll(selection);
-            System.out.println("The books have been removed");
-        } else {
-            System.out.println("The books were not removed");
-        }
-        WriteCSV(collection, fileName);
+        
+        
+        
     }
     
-    private static ArrayList<Book> SelectionOfBooks(Scanner input, String fileName) throws FileNotFoundException {
-        ArrayList<Book> selection = new ArrayList<>();
-        String option = new String();
-        while (selection.isEmpty()) {
-            System.out.println("");
-            System.out.println("The selection is empty, please select something");
-            System.out.println("To select books according to the identifier, press 'I'");
-            System.out.println("To select books according to the title, press 'T'");
-            System.out.println("To select books according to the author, press 'A'");
-            option = input.nextLine();
-            switch (option) {
-                case "I":
-                    selection = SelectBooksPerIdentifier(input, FillBooksFromFile(fileName));
-                    break;
-                case "T":
-                    selection = SelectBooksPerTitle(input, FillBooksFromFile(fileName));
-                    break;
-                case "A":
-                    selection = SelectBooksPerAuthor(input, FillBooksFromFile(fileName));
-                    break;
-                default:
-                    System.out.println("The value enterred in not valid. Try again.");
-                    break;
+    private static void SummaryBooks() throws ClassNotFoundException, SQLException{
+        Scanner input = new Scanner(System.in);
+        String option=new String();
+        System.out.println("Summary of Books");
+        System.out.println("To display all books, enter 'A'");
+        System.out.println("To select an specific book, enter 'S'");
+        System.out.println("To quit this menu, enter 'Q'");
+        option = input.nextLine();
+        System.out.println("");
+        switch (option) {
+            case "A": DisplayBooks(getAllBooks()); break;
+            case "S": DisplayBooks(SelectBooks()); break;
+            case "Q": break;
+            default : System.out.println("The value entered is not valid, please enter a correct one");;
+        }
+    }
+     
+    private static void AddBooks() throws ClassNotFoundException, SQLException{
+        Scanner input = new Scanner(System.in);
+        String val=new String();
+        String opt=new String();
+        System.out.println("Addition of books");
+        Book a=new Book();
+        System.out.println("Please enter the ID of the new book");
+        val = input.nextLine();
+        while (!getBookFromQuery("bookid", val).isEmpty()) {
+            System.out.println("This ID is already used, please enter a valid ID");
+            val = input.nextLine();
+        }
+        a.setBookid(val);
+        
+        System.out.println(" ");
+        System.out.println("Please enter the ID of the work to which the book belongs");
+        val = input.nextLine();
+        while (ManageWorks.getWorkFromQuery("workid", val).isEmpty()) {
+            System.out.println("This ID doesn't exist, please enter a valid ID");
+            val = input.nextLine();
+        }
+        a.setWorkid(val);
+        
+        System.out.println("Is the edition of this book a new edition? (Y/N)");
+        opt = input.nextLine();
+        if (opt.equals("Y")) {
+            ManageEditions.AddEditions();
+        }
+        System.out.println(" ");
+        System.out.println("Please enter the ID of the edition of the book");
+        val = input.nextLine();
+        while (ManageEditions.getEditionFromQuery("editionid", val).isEmpty()) {
+            System.out.println("This ID doesn't exist, please enter a valid ID");
+            val = input.nextLine();
+        }
+        a.setEditionid(val);
+        
+        System.out.println("");
+        System.out.println("Please enter the location of the book");
+        a.setLocation(input.nextLine());
+        System.out.println("");
+        System.out.println("Please enter the buy date of the book");
+        a.setBuyDate(input.nextLine());
+        System.out.println("");
+        System.out.println("Please enter the isbn of the book");
+        a.setIsbn(input.nextLine());
+        System.out.println("");
+        System.out.println("Please enter the format of the book");
+        a.setFormat(input.nextLine());
+        System.out.println("");
+        System.out.println("Please enter the language of the book");
+        a.setLanguage(input.nextLine());
+        System.out.println("");
+        System.out.println("The new book is:");
+        a.toDisplay();
+        setBookToQuery(a);
+    }
+    
+        private String bookid;
+    private String workid;
+    private String editionid;
+    private String location;
+    private String buyDate;
+    private String isbn;
+    private String format;
+    private String language;
+    
+    private static void ModifyBooks() throws ClassNotFoundException, SQLException{        
+        Scanner input = new Scanner(System.in);
+        String option=new String();
+        String var=new String();
+        String val=new String();
+        System.out.println("Modification of books");        
+        System.out.println("What is the book you which to modify");
+        ArrayList<Book> selection = SelectBooks();
+        System.out.println("What is the variable you which to modify?");
+        System.out.println("For the book ID, enter 'B'. For the work ID, enter 'W'. For the edition ID, enter 'E'. For the location, enter 'L'. "
+                + "For the buy date, enter 'D'. For the isbn, enter 'I'. For the format, enter 'F'. For the language, enter 'L'.");
+        option = input.nextLine();
+        switch (option) {
+            case "I": var="bookid";break;
+            case "A": var="editionid";break;
+            case "T": var="title";break;
+            case "P": var="first_publication";break;
+            case "L": var="original_language";break;
+            default : System.out.println("The value entered is not valid, please enter a correct one");
+        }
+        System.out.println("");
+        System.out.println("What is the new value of this variable? ");
+        val = input.nextLine();
+        if (var=="editionid"){
+            while (ManageEditions.getEditionFromQuery("editionid", val).isEmpty()) {
+                System.out.println("This ID doesn't exist, please enter a valid ID");
+                val = input.nextLine();
             }
+        }
+        
+        modifyBookInQuery(selection, var, val);        
+    }
+    
+    private static void DeleteBooks() throws ClassNotFoundException, SQLException{
+        Scanner input = new Scanner(System.in);
+        String option=new String();
+        System.out.println("Deletion of books");
+        ArrayList<Book> selection = SelectBooks();
+        System.out.println("");
+        System.out.println("The following books will be deleted.");
+        DisplayBooks(selection);
+        System.out.println("Do you confirm?");
+        option=input.nextLine();
+        if(option.equals("Y")) {
+            for (Book a : selection ) {
+                deleteBookByQuery(a);
+            }
+        } else {
+            System.out.println("The books were not deleted");}
+    }
+    
+    private static ArrayList<Book> SelectBooks() throws ClassNotFoundException, SQLException {
+        Scanner input = new Scanner(System.in);
+        String id=new String();
+        String var=new String();
+        String val=new String();
+        String option=new String();
+        System.out.println("Selection of books");
+        System.out.println("To search based on the ID, enter 'I'");
+        System.out.println("To search based on the edition ID, enter 'A'");
+        System.out.println("To search based on the title, enter 'T'");
+        System.out.println("To search based on the date of first publication, enter 'P'");
+        System.out.println("To search based on the original language, enter 'L'");
+        System.out.println("To quit this menu, enter 'Q'");
+        option = input.nextLine();
+        System.out.println("");
+        switch (option) {
+            case "I": var="bookid";break;
+            case "A": var="editionid";break;
+            case "T": var="title";break;
+            case "P": var="first_publication";break;
+            case "L": var="original_language";break;
+            case "Q": break;
+            default : System.out.println("The value entered is not valid, please enter a correct one");;
+        }
+        System.out.println("Please enter the value you are look for");
+        val= input.nextLine();
+        System.out.println("");
+        return getBookFromQuery(var, val);
+    }
+    
+    private static ArrayList<Book> getBookFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
+        ArrayList<Book> selection = new ArrayList<>();
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
+        Statement statement = connx.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM WORKS WHERE "+var+"='"+val+"'");
+        while (resultSet.next()) {
+            Book b = new Book();
+            selection.add(b);
+            b.setBookid(resultSet.getString(1));
+            b.setWorkid(resultSet.getString(2));
+            b.setLocation(resultSet.getString(3));
+            b.setBuyDate(resultSet.getString(4));
+            b.setIsbn(resultSet.getString(5));
+            b.setFormat(resultSet.getString(6));
+            b.setLanguage(resultSet.getString(7));
         }
         return selection;
     }
-
-    private static ArrayList<Book> SelectBooksPerIdentifier(Scanner input, ArrayList<Book> collection) {
+    
+    private static void modifyBookInQuery(ArrayList<Book> selection, String var, String val) throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
+        Statement statement = connx.createStatement();
+        for (Book a : selection) {
+            statement.execute("UPDATE WORKS SET "+var+"='"+val+"' WHERE WORKID='"+a.getBookid()+"'");
+        }
+    }
+    
+    private static void setBookToQuery(Book a) throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
+        Statement statement = connx.createStatement();
+        statement.execute("insert into WORKS (bookid,workid,editionid,location,buy_date,isbn,format,language) values ('"+a.getBookid()+"','"+a.getWorkid()+"','"+a.getEditionid()+"','"+a.getLocation()+"','"+a.getBuyDate()+"','"+a.getIsbn()+"','"+a.getFormat()+"','"+a.getLanguage()+"') ;");
+    }
+    
+    private static ArrayList<Book> getAllBooks() throws ClassNotFoundException, SQLException {
         ArrayList<Book> selection = new ArrayList<>();
-        String in;
-        System.out.println("Please enter the identifier of the book you are looking for:");
-        in = input.nextLine();
-        for (Book b : collection) {
-            if (b.getIdentifier().equals(in)) {
-                selection.add(b);
-            }
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
+        Statement statement = connx.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM WORKS");
+        while (resultSet.next()) {
+            Book b = new Book();
+            selection.add(b);
+            b.setBookid(resultSet.getString(1));
+            b.setWorkid(resultSet.getString(2));
+            b.setLocation(resultSet.getString(3));
+            b.setBuyDate(resultSet.getString(4));
+            b.setIsbn(resultSet.getString(5));
+            b.setFormat(resultSet.getString(6));
+            b.setLanguage(resultSet.getString(7));
         }
         return selection;
     }
-
-    private static ArrayList<Book> SelectBooksPerTitle(Scanner input, ArrayList<Book> collection) {
-        ArrayList<Book> selection = new ArrayList<>();
-        String in;
-        System.out.println("Please enter the title of the book you are looking for:");
-        in = input.nextLine();
-        for (Book b : collection) {
-            if (b.getTitle().equals(in)) {
-                selection.add(b);
-            }
-        }
-        return selection;
+    
+    private static void deleteBookByQuery(Book a) throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
+        Statement statement = connx.createStatement();
+        statement.execute("DELETE FROM WORKS WHERE bookid='"+a.getBookid()+"'");
     }
-
-    private static ArrayList<Book> SelectBooksPerAuthor(Scanner input, ArrayList<Book> collection) {
-        ArrayList<Book> selection = new ArrayList<>();
-        String in;
-        System.out.println("Please enter the Family Name of the book you are looking for:");
-        in = input.nextLine();
-        for (Book b : collection) {
-            Author a = new Author();
-            b.setAuthor(a);
-            if (a.getFamilyName().equals(in)) {
-                selection.add(b);
-            }
-        }
-        return selection;
-    }
-
-    private static void WriteCSV(ArrayList<Book> collection, String csvName) throws FileNotFoundException {
-        PrintWriter csv = new PrintWriter(csvName);
-        csv.println("Tech ID;Identifier;Location;Buy Date;Edition;Isbn;Format;Language;Author Name;Author Family Name;Title;First Pub;Orig Lang");
-        for (Book b : collection) {
-            csv.println(b.toCsv());
-        }
-        csv.close();
-    }
-
-    private static void EnterBookBasics(Book b, Scanner input) {
-        System.out.println("Please enter the identifier of the book :");
-        b.setIdentifier(input.nextLine());
-
-        System.out.println("Please enter the location where the book will be stored:");
-        b.setLocation(input.nextLine());
-
-        System.out.println("Please enter the buy date of the book :");
-        b.setBuyDate(input.nextLine());
-
-    }
-
-    private static void EnterBookLong(Book b, Scanner input) {
-        Edition e = new Edition();
-        System.out.println("Please enter the edition of the book :");
-        e.setName(input.nextLine());
-        b.setEdition(e);
-
-        System.out.println("Please enter the ISBN of the book:");
-        b.setIsbn(input.nextLine());
-
-        System.out.println("Please enter the format of the book :");
-        b.setFormat(input.nextLine());
-
-        System.out.println("Please enter the language of the book :");
-        b.setLanguage(input.nextLine());
-
-    }
-
-    private static void EnterWork(Book b, Scanner input) {
-        Author a = new Author();
-        System.out.println("Please enter the name author of the book :");
-        a.setName(input.nextLine());
-        System.out.println("Please enter the family name author of the book :");
-        a.setFamilyName(input.nextLine());
-        b.setAuthor(a);
-
-        System.out.println("Please enter the title of the book:");
-        b.setTitle(input.nextLine());
-
-        System.out.println("Please enter the date of the first publication of the book :");
-        b.setFirstPublication(input.nextLine());
-
-        System.out.println("Please enter the original language of the book :");
-        b.setOrigLanguage(input.nextLine());
-
-    }
-
-    private static void DisplayBooksBasics(ArrayList<Book> collection) {
-        for (int i = 0; i < collection.size(); i++) {
-            System.out.println(collection.get(i).getIdentifier() + " " + collection.get(i).getLocation() + " " + collection.get(i).getBuyDate());
-        }
-    }
-
-    private static void DisplayBooksComplete(ArrayList<Book> collection) {
-        for (Book b : collection) {
+    
+    private static void DisplayBooks(ArrayList<Book> selection) {
+        System.out.println("Book ID ; Work ID ; Edition ID ; Location ; Buy Date ; ISBN ; Format ; Language");
+        for (Book b : selection) {
             b.toDisplay();
         }
+        System.out.println("");
     }
-
-    private static void WriteTXT(ArrayList<Book> collection, String fileName, String option) throws FileNotFoundException {
-        PrintWriter out = new PrintWriter(fileName);
-        for (int i = 0; i < collection.size(); i++) {
-            switch (option) {
-                case "B":
-                    out.println(collection.get(i).toString());
-                    break;
-                default:
-                    out.println(collection.get(i).toStringLong());
-                    break;
-            }
-        }
-        out.close();
-    }
-
-    /*
-    private static void SummaryOfBooks(Scanner input, ArrayList<Book> collection) {
-        DisplayBooksComplete(SelectionOfBooks(input, collection));
-    }
-    */
     
 }

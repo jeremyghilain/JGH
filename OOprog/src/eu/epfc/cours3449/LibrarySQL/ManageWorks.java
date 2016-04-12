@@ -61,6 +61,7 @@ public class ManageWorks {
     private static void AddWorks() throws ClassNotFoundException, SQLException{
         Scanner input = new Scanner(System.in);
         String val=new String();
+        String opt=new String();
         System.out.println("Addition of works");
         Work a=new Work();
         System.out.println("Please enter the ID of the new work");
@@ -69,7 +70,13 @@ public class ManageWorks {
             System.out.println("This ID is already used, please enter a valid ID");
             val = input.nextLine();
         }
-        a.setWorkid(val);     
+        a.setWorkid(val);
+        System.out.println("Is the author of this work a new author? (Y/N)");
+        opt = input.nextLine();
+        if (opt.equals("Y")) {
+            ManageAuthors.AddAuthors();
+        }
+        System.out.println(" ");
         System.out.println("Please enter the ID of the author of the work");
         val = input.nextLine();
         while (ManageAuthors.getAuthorFromQuery("authorid", val).isEmpty()) {
@@ -174,7 +181,7 @@ public class ManageWorks {
         return getWorkFromQuery(var, val);
     }
     
-    private static ArrayList<Work> getWorkFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
+    public static ArrayList<Work> getWorkFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
         ArrayList<Work> selection = new ArrayList<>();
         Class.forName("com.mysql.jdbc.Driver");
         Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");

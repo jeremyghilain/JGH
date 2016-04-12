@@ -58,7 +58,7 @@ public class ManageAuthors {
         }
     }
      
-    private static void AddAuthors() throws ClassNotFoundException, SQLException{
+    public static void AddAuthors() throws ClassNotFoundException, SQLException{
         Scanner input = new Scanner(System.in);
         String val=new String();
         System.out.println("Addition of authors");
