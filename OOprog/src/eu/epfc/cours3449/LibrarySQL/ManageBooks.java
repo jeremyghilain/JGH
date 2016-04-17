@@ -133,6 +133,9 @@ public class ManageBooks {
         System.out.println("Modification of books");        
         System.out.println("What is the book you which to modify");
         ArrayList<Book> selection = SelectBooks();
+        System.out.println("The books you wish to modify are the following");
+        DisplayBooks(selection);
+        System.out.println("");
         System.out.println("What is the variable you which to modify?");
         System.out.println("For the book ID, enter 'B'. For the work ID, enter 'W'. For the edition ID, enter 'E'. For the location, enter 'L'. "
                 + "For the buy date, enter 'D'. For the isbn, enter 'I'. For the format, enter 'F'. For the language, enter 'G'.");
@@ -151,8 +154,14 @@ public class ManageBooks {
         System.out.println("");
         System.out.println("What is the new value of this variable? ");
         val = input.nextLine();
-        if (var=="editionid"){
+        if (var.equals("editionid")){
             while (ManageEditions.getEditionFromQuery("editionid", val).isEmpty()) {
+                System.out.println("This ID doesn't exist, please enter a valid ID");
+                val = input.nextLine();
+            }
+        }
+        if (var.equals("workid")){
+            while (ManageWorks.getWorkFromQuery("workid", val).isEmpty()) {
                 System.out.println("This ID doesn't exist, please enter a valid ID");
                 val = input.nextLine();
             }
@@ -215,7 +224,7 @@ public class ManageBooks {
         return getBookFromQuery(var, val);
     }
     
-    private static ArrayList<Book> getBookFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
+    public static ArrayList<Book> getBookFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
         ArrayList<Book> selection = new ArrayList<>();
         Class.forName("com.mysql.jdbc.Driver");
         Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
@@ -235,7 +244,7 @@ public class ManageBooks {
         return selection;
     }
     
-    private static void modifyBookInQuery(ArrayList<Book> selection, String var, String val) throws ClassNotFoundException, SQLException {
+    public static void modifyBookInQuery(ArrayList<Book> selection, String var, String val) throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
         Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
         Statement statement = connx.createStatement();

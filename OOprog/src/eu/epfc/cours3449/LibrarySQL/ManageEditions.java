@@ -84,9 +84,13 @@ public class ManageEditions {
         String option=new String();
         String var=new String();
         String val=new String();
+        String oldval=new String();
         System.out.println("Modification of editions");        
         System.out.println("What is the edition you which to modify");
         ArrayList<Edition> selection = SelectEditions();
+        System.out.println("The editions you wish to modify are the following");
+        DisplayEditions(selection);
+        System.out.println("");
         System.out.println("What is the variable you which to modify?");
         System.out.println("For the ID, enter 'I'. For the name, enter 'N'.");
         option = input.nextLine();
@@ -98,8 +102,12 @@ public class ManageEditions {
         System.out.println("");
         System.out.println("What is the new value of this variable? ");
         val = input.nextLine();
+        oldval=selection.get(0).getEditionid();
         
-        modifyEditionInQuery(selection, var, val);        
+        modifyEditionInQuery(selection, var, val);
+        if (var.equals("editionid")) {
+            ManageBooks.modifyBookInQuery(ManageBooks.getBookFromQuery(var, oldval), var, val);
+        }
     }
     
     private static void DeleteEditions() throws ClassNotFoundException, SQLException{

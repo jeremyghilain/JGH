@@ -108,6 +108,9 @@ public class ManageWorks {
         System.out.println("Modification of works");        
         System.out.println("What is the work you which to modify");
         ArrayList<Work> selection = SelectWorks();
+        System.out.println("The works you wish to modify are the following");
+        DisplayWorks(selection);
+        System.out.println("");
         System.out.println("What is the variable you which to modify?");
         System.out.println("For the ID, enter 'I'. For the author ID, enter 'A'. For the title, enter 'T'. "
                 + "For the date of first publication, enter 'P'. For the original language, enter 'L'");
@@ -123,7 +126,7 @@ public class ManageWorks {
         System.out.println("");
         System.out.println("What is the new value of this variable? ");
         val = input.nextLine();
-        if (var=="authorid"){
+        if (var.equals("authorid")){
             while (ManageAuthors.getAuthorFromQuery("authorid", val).isEmpty()) {
                 System.out.println("This ID doesn't exist, please enter a valid ID");
                 val = input.nextLine();
@@ -199,7 +202,7 @@ public class ManageWorks {
         return selection;
     }
     
-    private static void modifyWorkInQuery(ArrayList<Work> selection, String var, String val) throws ClassNotFoundException, SQLException {
+    public static void modifyWorkInQuery(ArrayList<Work> selection, String var, String val) throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
         Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
         Statement statement = connx.createStatement();
@@ -240,7 +243,7 @@ public class ManageWorks {
         statement.execute("DELETE FROM WORKS WHERE workid='"+a.getWorkid()+"'");
     }
     
-    private static void DisplayWorks(ArrayList<Work> selection) {
+    public static void DisplayWorks(ArrayList<Work> selection) {
         System.out.println("Work ID ; Author ID ; Title ; First Publication ; Original Language");
         for (Work w : selection) {
             w.toDisplay();

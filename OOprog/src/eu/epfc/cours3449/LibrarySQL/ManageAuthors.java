@@ -87,9 +87,13 @@ public class ManageAuthors {
         String option=new String();
         String var=new String();
         String val=new String();
+        String oldval=new String();
         System.out.println("Modification of authors");        
         System.out.println("What is the author you which to modify");
         ArrayList<Author> selection = SelectAuthors();
+        System.out.println("The authors you wish to modify are the following");
+        DisplayAuthors(selection);
+        System.out.println("");
         System.out.println("What is the variable you which to modify?");
         System.out.println("For the ID, enter 'I'. For the name, enter 'N'. For the family name, enter 'F'");
         option = input.nextLine();
@@ -102,8 +106,13 @@ public class ManageAuthors {
         System.out.println("");
         System.out.println("What is the new value of this variable? ");
         val = input.nextLine();
+        oldval=selection.get(0).getAuthorid();
         
-        modifyAuthorInQuery(selection, var, val);        
+        modifyAuthorInQuery(selection, var, val);
+        if (var.equals("authorid")) {
+            ManageWorks.modifyWorkInQuery(ManageWorks.getWorkFromQuery(var, oldval), var, val);
+            ManageBooks.modifyBookInQuery(ManageBooks.getBookFromQuery(var, oldval), var, val);
+        }
     }
     
     private static void DeleteAuthors() throws ClassNotFoundException, SQLException{
