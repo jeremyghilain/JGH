@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import eu.epfc.cours3449.LibraryDAO.LibraryDAO;
 import eu.epfc.cours3449.LibraryDAO.LibraryDAOImpl;
-import eu.epfc.cours3449.LibraryDAOmodel.Author;
+import eu.epfc.cours3449.LibraryDAOmodel.Work;
 
 public class ManageWorks {
     private static LibraryDAO libraryDAO = new LibraryDAOImpl();
@@ -57,7 +57,7 @@ public class ManageWorks {
         option = input.nextLine();
         System.out.println("");
         switch (option) {
-            case "A": DisplayWorks(getAllWorks()); break;
+            case "A": DisplayWorks(libraryDAO.getAllWorks()); break;
             case "S": DisplayWorks(SelectWorks()); break;
             case "Q": break;
             default : System.out.println("The value entered is not valid, please enter a correct one");;
@@ -72,7 +72,7 @@ public class ManageWorks {
         Work a=new Work();
         System.out.println("Please enter the ID of the new work");
         val = input.nextLine();
-        while (!getWorkFromQuery("workid", val).isEmpty()) {
+        while (!libraryDAO.getWorkFromQuery("workid", val).isEmpty()) {
             System.out.println("This ID is already used, please enter a valid ID");
             val = input.nextLine();
         }
@@ -85,7 +85,7 @@ public class ManageWorks {
         System.out.println(" ");
         System.out.println("Please enter the ID of the author of the work");
         val = input.nextLine();
-        while (ManageAuthors.getAuthorFromQuery("authorid", val).isEmpty()) {
+        while (libraryDAO.getAuthorFromQuery("authorid", val).isEmpty()) {
             System.out.println("This ID doesn't exist, please enter a valid ID");
             val = input.nextLine();
         }
@@ -103,7 +103,7 @@ public class ManageWorks {
         System.out.println("");
         System.out.println("The new work is:");
         a.toDisplay();
-        setWorkToQuery(a);
+        libraryDAO.setWorkToQuery(a);
     }
     
     private static void ModifyWorks() throws ClassNotFoundException, SQLException{        
@@ -133,13 +133,13 @@ public class ManageWorks {
         System.out.println("What is the new value of this variable? ");
         val = input.nextLine();
         if (var.equals("authorid")){
-            while (ManageAuthors.getAuthorFromQuery("authorid", val).isEmpty()) {
+            while (libraryDAO.getAuthorFromQuery("authorid", val).isEmpty()) {
                 System.out.println("This ID doesn't exist, please enter a valid ID");
                 val = input.nextLine();
             }
         }
         
-        modifyWorkInQuery(selection, var, val);        
+        libraryDAO.modifyWorkInQuery(selection, var, val);        
     }
     
     private static void DeleteWorks() throws ClassNotFoundException, SQLException{
@@ -154,7 +154,7 @@ public class ManageWorks {
         option=input.nextLine();
         if(option.equals("Y")) {
             for (Work a : selection ) {
-                deleteWorkByQuery(a);
+                libraryDAO.deleteWorkByQuery(a);
             }
         } else {
             System.out.println("The works were not deleted");}
@@ -187,7 +187,7 @@ public class ManageWorks {
         System.out.println("Please enter the value you are look for");
         val= input.nextLine();
         System.out.println("");
-        return getWorkFromQuery(var, val);
+        return libraryDAO.getWorkFromQuery(var, val);
     }
     
     public static void DisplayWorks(ArrayList<Work> selection) {

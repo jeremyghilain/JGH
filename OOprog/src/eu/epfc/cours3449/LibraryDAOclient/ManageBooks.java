@@ -57,7 +57,7 @@ public class ManageBooks {
         option = input.nextLine();
         System.out.println("");
         switch (option) {
-            case "A": DisplayBooks(getAllBooks()); break;
+            case "A": DisplayBooks(libraryDAO.getAllBooks()); break;
             case "S": DisplayBooks(SelectBooks()); break;
             case "Q": break;
             default : System.out.println("The value entered is not valid, please enter a correct one");;
@@ -72,7 +72,7 @@ public class ManageBooks {
         Book a=new Book();
         System.out.println("Please enter the ID of the new book");
         val = input.nextLine();
-        while (!getBookFromQuery("bookid", val).isEmpty()) {
+        while (!libraryDAO.getBookFromQuery("bookid", val).isEmpty()) {
             System.out.println("This ID is already used, please enter a valid ID");
             val = input.nextLine();
         }
@@ -81,7 +81,7 @@ public class ManageBooks {
         System.out.println(" ");
         System.out.println("Please enter the ID of the work to which the book belongs");
         val = input.nextLine();
-        while (ManageWorks.getWorkFromQuery("workid", val).isEmpty()) {
+        while (libraryDAO.getWorkFromQuery("workid", val).isEmpty()) {
             System.out.println("This ID doesn't exist, please enter a valid ID");
             val = input.nextLine();
         }
@@ -95,7 +95,7 @@ public class ManageBooks {
         System.out.println(" ");
         System.out.println("Please enter the ID of the edition of the book");
         val = input.nextLine();
-        while (ManageEditions.getEditionFromQuery("editionid", val).isEmpty()) {
+        while (libraryDAO.getEditionFromQuery("editionid", val).isEmpty()) {
             System.out.println("This ID doesn't exist, please enter a valid ID");
             val = input.nextLine();
         }
@@ -119,7 +119,7 @@ public class ManageBooks {
         System.out.println("");
         System.out.println("The new book is:");
         a.toDisplay();
-        setBookToQuery(a);
+        libraryDAO.setBookToQuery(a);
     }
     
         private String bookid;
@@ -161,19 +161,19 @@ public class ManageBooks {
         System.out.println("What is the new value of this variable? ");
         val = input.nextLine();
         if (var.equals("editionid")){
-            while (ManageEditions.getEditionFromQuery("editionid", val).isEmpty()) {
+            while (libraryDAO.getEditionFromQuery("editionid", val).isEmpty()) {
                 System.out.println("This ID doesn't exist, please enter a valid ID");
                 val = input.nextLine();
             }
         }
         if (var.equals("workid")){
-            while (ManageWorks.getWorkFromQuery("workid", val).isEmpty()) {
+            while (libraryDAO.getWorkFromQuery("workid", val).isEmpty()) {
                 System.out.println("This ID doesn't exist, please enter a valid ID");
                 val = input.nextLine();
             }
         }
         
-        modifyBookInQuery(selection, var, val);        
+        libraryDAO.modifyBookInQuery(selection, var, val);        
     }
     
     private static void DeleteBooks() throws ClassNotFoundException, SQLException{
@@ -188,7 +188,7 @@ public class ManageBooks {
         option=input.nextLine();
         if(option.equals("Y")) {
             for (Book a : selection ) {
-                deleteBookByQuery(a);
+                libraryDAO.deleteBookByQuery(a);
             }
         } else {
             System.out.println("The books were not deleted");}
@@ -227,70 +227,7 @@ public class ManageBooks {
         System.out.println("Please enter the value you are look for");
         val= input.nextLine();
         System.out.println("");
-        return getBookFromQuery(var, val);
-    }
-    
-    public static ArrayList<Book> getBookFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
-        ArrayList<Book> selection = new ArrayList<>();
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM WORKS WHERE "+var+"='"+val+"'");
-        while (resultSet.next()) {
-            Book b = new Book();
-            selection.add(b);
-            b.setBookid(resultSet.getString(1));
-            b.setWorkid(resultSet.getString(2));
-            b.setLocation(resultSet.getString(3));
-            b.setBuyDate(resultSet.getString(4));
-            b.setIsbn(resultSet.getString(5));
-            b.setFormat(resultSet.getString(6));
-            b.setLanguage(resultSet.getString(7));
-        }
-        return selection;
-    }
-    
-    public static void modifyBookInQuery(ArrayList<Book> selection, String var, String val) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-        for (Book a : selection) {
-            statement.execute("UPDATE WORKS SET "+var+"='"+val+"' WHERE WORKID='"+a.getBookid()+"'");
-        }
-    }
-    
-    private static void setBookToQuery(Book a) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-        statement.execute("insert into WORKS (bookid,workid,editionid,location,buy_date,isbn,format,language) values ('"+a.getBookid()+"','"+a.getWorkid()+"','"+a.getEditionid()+"','"+a.getLocation()+"','"+a.getBuyDate()+"','"+a.getIsbn()+"','"+a.getFormat()+"','"+a.getLanguage()+"') ;");
-    }
-    
-    private static ArrayList<Book> getAllBooks() throws ClassNotFoundException, SQLException {
-        ArrayList<Book> selection = new ArrayList<>();
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM WORKS");
-        while (resultSet.next()) {
-            Book b = new Book();
-            selection.add(b);
-            b.setBookid(resultSet.getString(1));
-            b.setWorkid(resultSet.getString(2));
-            b.setLocation(resultSet.getString(3));
-            b.setBuyDate(resultSet.getString(4));
-            b.setIsbn(resultSet.getString(5));
-            b.setFormat(resultSet.getString(6));
-            b.setLanguage(resultSet.getString(7));
-        }
-        return selection;
-    }
-    
-    private static void deleteBookByQuery(Book a) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-        statement.execute("DELETE FROM WORKS WHERE bookid='"+a.getBookid()+"'");
+        return libraryDAO.getBookFromQuery(var, val);
     }
     
     private static void DisplayBooks(ArrayList<Book> selection) {

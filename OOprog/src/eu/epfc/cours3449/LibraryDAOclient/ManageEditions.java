@@ -1,5 +1,5 @@
 
-package eu.epfc.cours3449.LibrarySQL;
+package eu.epfc.cours3449.LibraryDAOclient;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,8 +11,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import eu.epfc.cours3449.LibraryDAO.LibraryDAO;
+import eu.epfc.cours3449.LibraryDAO.LibraryDAOImpl;
+import eu.epfc.cours3449.LibraryDAOmodel.Edition;
 
 public class ManageEditions {
+    private static LibraryDAO libraryDAO = new LibraryDAOImpl();
+//le static permet d'avoir la variable de manière globale, quelque soit la méthode
+    
     public static void main(String args[ ]) throws ClassNotFoundException, SQLException {
         Boolean cont = true;
         String option=new String();
@@ -51,7 +57,7 @@ public class ManageEditions {
         option = input.nextLine();
         System.out.println("");
         switch (option) {
-            case "A": DisplayEditions(getAllEditions()); break;
+            case "A": DisplayEditions(libraryDAO.getAllEditions()); break;
             case "S": DisplayEditions(SelectEditions()); break;
             case "Q": break;
             default : System.out.println("The value entered is not valid, please enter a correct one");;
@@ -65,7 +71,7 @@ public class ManageEditions {
         Edition e=new Edition();
         System.out.println("Please enter the ID of the new edition");
         val = input.nextLine();
-        while (!getEditionFromQuery("editionid", val).isEmpty()) {
+        while (!libraryDAO.getEditionFromQuery("editionid", val).isEmpty()) {
             System.out.println("This ID is already used, please enter a valid ID");
             val = input.nextLine();
         }
@@ -76,7 +82,7 @@ public class ManageEditions {
         System.out.println("");
         System.out.println("The new edition is:");
         e.toDisplay();
-        setEditionToQuery(e);
+        libraryDAO.setEditionToQuery(e);
     }
     
     private static void ModifyEditions() throws ClassNotFoundException, SQLException{        
@@ -104,9 +110,9 @@ public class ManageEditions {
         val = input.nextLine();
         oldval=selection.get(0).getEditionid();
         
-        modifyEditionInQuery(selection, var, val);
+        libraryDAO.modifyEditionInQuery(selection, var, val);
         if (var.equals("editionid")) {
-            ManageBooks.modifyBookInQuery(ManageBooks.getBookFromQuery(var, oldval), var, val);
+            libraryDAO.modifyBookInQuery(libraryDAO.getBookFromQuery(var, oldval), var, val);
         }
     }
     
@@ -122,7 +128,7 @@ public class ManageEditions {
         option=input.nextLine();
         if(option.equals("Y")) {
             for (Edition e : selection ) {
-                deleteEditionByQuery(e);
+                libraryDAO.deleteEditionByQuery(e);
             }
         } else {
             System.out.println("The editions were not deleted");}
@@ -149,60 +155,7 @@ public class ManageEditions {
         System.out.println("Please enter the value you are look for");
         val= input.nextLine();
         System.out.println("");
-        return getEditionFromQuery(var, val);
-    }
-    
-    public static ArrayList<Edition> getEditionFromQuery(String var, String val) throws ClassNotFoundException, SQLException {
-        ArrayList<Edition> selection = new ArrayList<>();
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM EDITIONS WHERE "+var+"='"+val+"'");
-        while (resultSet.next()) {
-            Edition e = new Edition();
-            selection.add(e);
-            e.setEditionid(resultSet.getString(1));
-            e.setName(resultSet.getString(2));
-        }
-        return selection;
-    }
-    
-    private static void modifyEditionInQuery(ArrayList<Edition> selection, String var, String val) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-        for (Edition a : selection) {
-            statement.execute("UPDATE EDITIONS SET "+var+"='"+val+"' WHERE EDITIONID='"+a.getEditionid()+"'");
-        }
-    }
-    
-    private static void setEditionToQuery(Edition a) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-        statement.execute("insert into EDITIONS (editionid,name) values ('"+a.getEditionid()+"','"+a.getName()+"') ;");
-    }
-    
-    private static ArrayList<Edition> getAllEditions() throws ClassNotFoundException, SQLException {
-        ArrayList<Edition> selection = new ArrayList<>();
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM EDITIONS");
-        while (resultSet.next()) {
-            Edition e = new Edition();
-            selection.add(e);
-            e.setEditionid(resultSet.getString(1));
-            e.setName(resultSet.getString(2));
-        }
-        return selection;
-    }
-    
-    private static void deleteEditionByQuery(Edition a) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-        statement.execute("DELETE FROM EDITIONS WHERE editionid='"+a.getEditionid()+"'");
+        return libraryDAO.getEditionFromQuery(var, val);
     }
     
     private static void DisplayEditions(ArrayList<Edition> selection) {

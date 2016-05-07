@@ -112,11 +112,9 @@ public class LibraryDAOImpl implements LibraryDAO {
         }
     }
 
-    
     /*
      %%%%% Queries on Works
      */
-    
     private ArrayList<Work> getWorks(String query) {
         ArrayList<Work> selection = new ArrayList<>();
         Connection connection = null;
@@ -143,8 +141,7 @@ public class LibraryDAOImpl implements LibraryDAO {
     }
 
     public ArrayList<Work> getWorkFromQuery(String var, String val) {
-        String query = "SELECT * FROM WORKS WHERE " + var + "='" + val + "'";
-        return getWorks(query);
+        return getWorks("SELECT * FROM WORKS WHERE " + var + "='" + val + "'");
     }
 
     public ArrayList<Work> getAllWorks() {
@@ -178,12 +175,9 @@ public class LibraryDAOImpl implements LibraryDAO {
         }
     }
 
-    
     /*
      %%%%% Queries on Books
      */
-    
-    
     private ArrayList<Book> getBooks(String query) {
         ArrayList<Book> selection = new ArrayList<>();
         Connection connection = null;
@@ -192,16 +186,16 @@ public class LibraryDAOImpl implements LibraryDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-            Book b = new Book();
-            selection.add(b);
-            b.setBookid(resultSet.getString(1));
-            b.setWorkid(resultSet.getString(2));
-            b.setLocation(resultSet.getString(3));
-            b.setBuyDate(resultSet.getString(4));
-            b.setIsbn(resultSet.getString(5));
-            b.setFormat(resultSet.getString(6));
-            b.setLanguage(resultSet.getString(7));
-        }
+                Book b = new Book();
+                selection.add(b);
+                b.setBookid(resultSet.getString(1));
+                b.setWorkid(resultSet.getString(2));
+                b.setLocation(resultSet.getString(3));
+                b.setBuyDate(resultSet.getString(4));
+                b.setIsbn(resultSet.getString(5));
+                b.setFormat(resultSet.getString(6));
+                b.setLanguage(resultSet.getString(7));
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
 
@@ -210,35 +204,94 @@ public class LibraryDAOImpl implements LibraryDAO {
         }
         return selection;
     }
-    
+
     public ArrayList<Book> getBookFromQuery(String var, String val) {
-        String query = "SELECT * FROM WORKS WHERE "+var+"='"+val+"'";
-        return getBooks(query);
+        return getBooks("SELECT * FROM BOOKS WHERE " + var + "='" + val + "'");
     }
-    
-    private ArrayList<Book> getAllBooks() {
-        String query = "SELECT * FROM WORKS";
-        return getBooks(query);
+
+    public ArrayList<Book> getAllBooks() {
+        return getBooks("SELECT * FROM WORKS");
     }
-    
-    public static void modifyBookInQuery(ArrayList<Book> selection, String var, String val) {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connx = DriverManager.getConnection("jdbc:mysql://localhost/library", "root", "");
-        Statement statement = connx.createStatement();
-        for (Book a : selection) {
-            statement.execute("UPDATE WORKS SET "+var+"='"+val+"' WHERE WORKID='"+a.getBookid()+"'");
+
+    public void modifyBookInQuery(ArrayList<Book> selection, String var, String val) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            for (Book b : selection) {
+                PreparedStatement statement = connection.prepareStatement("UPDATE WORKS SET " + var + "='" + val + "' WHERE WORKID='" + b.getBookid() + "'");
+                statement.executeQuery();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+
+        } finally {
+            closeConnection(connection);
         }
     }
-    
-    private void setBookToQuery(Book a) {
-        String query = "insert into WORKS (bookid,workid,editionid,location,buy_date,isbn,format,language) values ('"+a.getBookid()+"','"+a.getWorkid()+"','"+a.getEditionid()+"','"+a.getLocation()+"','"+a.getBuyDate()+"','"+a.getIsbn()+"','"+a.getFormat()+"','"+a.getLanguage()+"') ;";
-        executeQuery(query);
+
+    public void setBookToQuery(Book a) {
+        executeQuery("insert into WORKS (bookid,workid,editionid,location,buy_date,isbn,format,language) values ('" + a.getBookid() + "','" + a.getWorkid() + "','" + a.getEditionid() + "','" + a.getLocation() + "','" + a.getBuyDate() + "','" + a.getIsbn() + "','" + a.getFormat() + "','" + a.getLanguage() + "') ;");
     }
-    
-    private void deleteBookByQuery(Book a) {
-        String query = "DELETE FROM WORKS WHERE bookid='"+a.getBookid()+"'";
-        executeQuery(query);
+
+    public void deleteBookByQuery(Book a) {
+        executeQuery("DELETE FROM WORKS WHERE bookid='" + a.getBookid() + "'");
     }
-    
-    
+
+    /*
+     %%%%% Queries on Editions
+     */
+    private ArrayList<Edition> getEditions(String query) {
+        ArrayList<Edition> selection = new ArrayList<>();
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Edition e = new Edition();
+                selection.add(e);
+                e.setEditionid(resultSet.getString(1));
+                e.setName(resultSet.getString(2));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+
+        } finally {
+            closeConnection(connection);
+        }
+        return selection;
+    }
+
+    public ArrayList<Edition> getEditionFromQuery(String var, String val) {
+        return getEditions("SELECT * FROM EDITIONS WHERE " + var + "='" + val + "'");
+    }
+
+    public ArrayList<Edition> getAllEditions() {
+        return getEditions("SELECT * FROM EDITIONS");
+    }
+
+    public void modifyEditionInQuery(ArrayList<Edition> selection, String var, String val) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            for (Edition e : selection) {
+                PreparedStatement statement = connection.prepareStatement("UPDATE EDITIONS SET " + var + "='" + val + "' WHERE EDITIONID='" + e.getEditionid() + "'");
+                statement.executeQuery();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+
+        } finally {
+            closeConnection(connection);
+        }
+    }
+
+    public void setEditionToQuery(Edition a) {
+        executeQuery("insert into EDITIONS (editionid,name) values ('" + a.getEditionid() + "','" + a.getName() + "') ;");
+    }
+
+    public void deleteEditionByQuery(Edition a) {
+        executeQuery("DELETE FROM EDITIONS WHERE editionid='" + a.getEditionid() + "'");
+    }
+
 }
