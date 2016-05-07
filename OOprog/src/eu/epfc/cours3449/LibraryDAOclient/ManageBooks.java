@@ -230,7 +230,7 @@ public class ManageBooks {
         return libraryDAO.getBookFromQuery(var, val);
     }
     
-    private static void DisplayBooks(ArrayList<Book> selection) {
+    public static void DisplayBooks(ArrayList<Book> selection) {
         System.out.println("Book ID ; Work ID ; Edition ID ; Location ; Buy Date ; ISBN ; Format ; Language");
         for (Book b : selection) {
             b.toDisplay();

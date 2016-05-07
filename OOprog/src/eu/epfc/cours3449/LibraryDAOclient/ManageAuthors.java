@@ -14,6 +14,8 @@ import java.sql.Statement;
 import eu.epfc.cours3449.LibraryDAO.LibraryDAO;
 import eu.epfc.cours3449.LibraryDAO.LibraryDAOImpl;
 import eu.epfc.cours3449.LibraryDAOmodel.Author;
+import eu.epfc.cours3449.LibraryDAOmodel.Work;
+import eu.epfc.cours3449.LibraryDAOmodel.Book;
 
 public class ManageAuthors {
     private static LibraryDAO libraryDAO = new LibraryDAOImpl();
@@ -126,6 +128,9 @@ public class ManageAuthors {
         String option=new String();
         System.out.println("Deletion of authors");
         ArrayList<Author> selection = SelectAuthors();
+        String oldval=selection.get(0).getAuthorid();
+        ArrayList<Work> workselect =libraryDAO.getWorkFromQuery("workid", oldval);
+        ArrayList<Book> bookselect =libraryDAO.getBookFromQuery("bookid", oldval);
         System.out.println("");
         System.out.println("The following authors will be deleted.");
         DisplayAuthors(selection);
@@ -133,7 +138,25 @@ public class ManageAuthors {
         option=input.nextLine();
         if(option.equals("Y")) {
             for (Author a : selection ) {
-                libraryDAO.deleteAuthorByQuery(a);
+                libraryDAO.deleteAuthorByQuery(a);                                
+            }
+            System.out.println("");
+            System.out.println("The deleted authors were the authors of the following works. Do you confirm their deletion?");
+            ManageWorks.DisplayWorks(workselect);
+            option=input.nextLine();
+            if(option.equals("Y")) {
+                for (Work w : workselect) {
+                    libraryDAO.deleteWorkByQuery(w);
+                }
+            }
+            System.out.println("");
+            System.out.println("The deleted authors were the authors of the following books. Do you confirm their deletion?");
+            ManageBooks.DisplayBooks(bookselect);
+            option=input.nextLine();
+            if(option.equals("Y")) {
+                for (Book b : bookselect) {
+                    libraryDAO.deleteBookByQuery(b);
+                }
             }
         } else {
             System.out.println("The authors were not deleted");}
